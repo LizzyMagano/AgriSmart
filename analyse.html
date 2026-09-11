@@ -25,11 +25,19 @@
   <!-- Farm Analysis Form -->
   <section>
     <form id="farmForm">
-      <label>Rainfall Level:
-        <select id="rainfall">
-          <option>Low</option>
-          <option>Average</option>
-          <option>High</option>
+      <label>District:
+        <select id="district">
+          <option>Kweneng</option>
+          <option>Southern</option>
+          <option>Central</option>
+          <option>Northern</option>
+          <option>South East</option>
+          <option>Kgatleng</option>
+          <option>North East</option>
+          <option>North West</option>
+          <option>Chobe</option>
+          <option>Ghanzi</option>
+          <option>Kgalagadi</option>
         </select>
       </label>
       <input type="submit" value="Analyse Farm">
@@ -46,9 +54,9 @@
   <script>
     // Supabase connection details
     const SUPABASE_URL = "https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1/";
-    const SUPABASE_KEY ="sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD"; 
+    const SUPABASE_KEY = "sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD"; // ✅ publishable anon key
 
-    // Fetch crops by rainfall level
+    // Fetch crops by rainfall level from Supabase
     async function getCrops(level) {
       const response = await fetch(`${SUPABASE_URL}crops_by_rainfall?rainfall_level=eq.${level}`, {
         headers: {
@@ -58,21 +66,45 @@
       });
       const data = await response.json();
 
-      // Build results HTML
+      // Build crops HTML
       let html = `<h2>${level} Rainfall Crops</h2><ul>`;
       data.forEach(crop => {
         html += `<li><b>${crop.crop_name}</b> – ${crop.water_management}</li>`;
       });
       html += "</ul>";
-      document.getElementById("results").innerHTML = html;
+      document.getElementById("results").innerHTML += html;
+    }
+
+    // Fetch rainfall & temperature from Open-Meteo
+    async function getWeather() {
+      const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=-24.65&longitude=25.91&yearly=temperature_2m,rain_sum");
+      const data = await response.json();
+
+      let rain = data.yearly.rain_sum[0];
+      let temp = data.yearly.temperature_2m[0];
+
+      // Classify rainfall
+      let level = "";
+      if (rain < 400) level = "Low";
+      else if (rain < 800) level = "Average";
+      else level = "High";
+
+      // Show weather info
+      document.getElementById("results").innerHTML =
+        `<h2>Expected Rainfall: ${rain} mm</h2>
+         <h2>Expected Temperature: ${temp} °C</h2>
+         <p>Rainfall Level: ${level}</p>`;
+
+      // Fetch crops for that rainfall level
+      getCrops(level);
     }
 
     // Handle form submission
     document.getElementById("farmForm").addEventListener("submit", function(e) {
       e.preventDefault(); // stop page reload
-      let level = document.getElementById("rainfall").value;
-      getCrops(level); // fetch crops from Supabase
+      getWeather(); // fetch rainfall + crops automatically
     });
   </script>
 </body>
 </html>
+
