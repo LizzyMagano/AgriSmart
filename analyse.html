@@ -18,12 +18,12 @@
   </style>
 </head>
 <body>
-  <header>
+  <header id="pageHeader">
     <h1>🔍 Analyse My Farm</h1>
   </header>
 
   <!-- Farm Analysis Form -->
-  <section>
+  <section id="formSection">
     <form id="farmForm">
       <label>District:
         <select id="district">
@@ -45,9 +45,9 @@
   </section>
 
   <!-- Results Section -->
-  <section id="results"></section>
+  <section id="results" style="display:none;"></section>
 
-  <footer>
+  <footer id="pageFooter">
     <a href="index.html">🏠 Home</a> | <a href="calendar.html">📅 Farming Calendar</a>
   </footer>
 
@@ -102,9 +102,20 @@
     // Handle form submission
     document.getElementById("farmForm").addEventListener("submit", function(e) {
       e.preventDefault(); // stop page reload
-      getWeather(); // fetch rainfall + crops automatically
+
+      // Hide header, form, and footer
+      document.getElementById("pageHeader").style.display = "none";
+      document.getElementById("formSection").style.display = "none";
+      document.getElementById("pageFooter").style.display = "none";
+
+      // Show results section
+      document.getElementById("results").style.display = "block";
+
+      // Fetch rainfall + crops automatically
+      getWeather();
     });
   </script>
 </body>
 </html>
+
 
