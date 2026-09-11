@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana - Analyse My Farm</title>
+  <title>AgriSmart Botswana Farm Analysis</title>
   <style>
     body { margin:0; font-family:Arial,sans-serif; color:#fff; text-align:center;
       background-image:url('farm_background.jpg'); background-size:cover;
@@ -22,13 +22,27 @@
   <section>
     <form action="results.html" method="post">
       <label>District:
-        <select><option>Kweneng</option><option>Southern</option><option>Central</option></select>
+        <select>
+          <option>Kweneng</option>
+          <option>Southern</option>
+          <option>Central</option>
+        <option>Northern</option>
+          <option>South East</option>
+          <option>Kgatleng</option>
+          <option>North East</option>
+          <option>North West</option>
+        <option>Chobe</option>
+          <option>Ghanzi</option>
+          <option>Kgalagadi</option>
+          <option></option>
+        </select>
       </label>
       <label>Soil Type:
         <select><option>Sandy</option><option>Clay</option><option>Loam</option></select>
       </label>
       <label>Crop:
-        <select><option>Maize</option><option>Sorghum</option><option>Millet</option></select>
+        <select><option>Maize</option><option>Sorghum</option><option>Millet</option>
+        <option>Sweetreed</option><option>Watermelon</option><option>Sunflower</option><option>Groundnuts</option></select>
       </label>
       <label>Season/Month: <input type="text" name="season"></label>
       <input type="submit" value="Analyse Farm">
