@@ -48,74 +48,65 @@
   <section id="results" style="display:none;"></section>
 
   <footer id="pageFooter">
-    <a href="index.html">🏠 Home</a> | <a href="calendar.html">📅 Farming Calendar</a>
+    <a href="index.html"> Home</a> | <a href="calendar.html">Farming Calendar</a>
   </footer>
 
   <script>
-    // Supabase connection details
     const SUPABASE_URL = "https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1/";
-    const SUPABASE_KEY = "sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD"; // ✅ publishable anon key only
+    const SUPABASE_KEY = "sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD";
 
-    // Fetch all climate records for a district and compute averages
-    async function getClimateAverage(district) {
-      const response = await fetch(`${SUPABASE_URL}climate_data?district=eq.${district}`, {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
+    // Fetch latest climate data for a district
+    async function getClimate(district) {
+      const response = await fetch(
+        `${SUPABASE_URL}climate_data?district=eq.${district}&order=year.desc&limit=1`,
+        {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
+          }
         }
-      });
+      );
       const data = await response.json();
-      if (data.length === 0) return null;
-
-      const totalRain = data.reduce((sum, row) => sum + row.rainfall_mm, 0);
-      const totalTemp = data.reduce((sum, row) => sum + row.avg_temperature_c, 0);
-
-      const avgRain = (totalRain / data.length).toFixed(0);
-      const avgTemp = (totalTemp / data.length).toFixed(1);
-
-      return { district, avgRain, avgTemp };
+      return data[0];
     }
 
-    // Recommend crops based on rainfall and temperature
-    function recommendCrops(avgRain, avgTemp) {
-      if (avgRain < 400) {
-        return {
-          level: "Low Rainfall",
-          crops: ["Sorghum", "Millet", "Cowpea", "Groundnut"],
-          practices: ["Mulching", "Drip irrigation", "Rainwater harvesting"]
-        };
-      } else if (avgRain < 800) {
-        return {
-          level: "Average Rainfall",
-          crops: ["Maize", "Sunflower", "Groundnuts", "Watermelon"],
-          practices: ["Crop rotation", "Compost application", "Moderate irrigation"]
-        };
+    // Recommend crops based on rainfall/temperature expectations
+    function recommendCrops(rainfall, temp) {
+      let rainMessage = "";
+      let tempMessage = "";
+      let crops = [];
+
+      if (rainfall < 400) {
+        rainMessage = "Low rainfall expected";
+        crops = ["Sorghum", "Millet", "Cowpea", "Groundnut"];
+      } else if (rainfall < 800) {
+        rainMessage = " Average rainfall expected";
+        crops = ["Maize", "Sunflower", "Watermelon", "Groundnuts"];
       } else {
-        return {
-          level: "High Rainfall",
-          crops: ["Rice", "Cassava", "Wet-tolerant Maize", "Vegetables"],
-          practices: ["Raised beds", "Drainage channels", "Disease monitoring"]
-        };
+        rainMessage = "High rainfall expected";
+        crops = ["Rice", "Cassava", "Vegetables", "Wet-tolerant Maize"];
       }
+
+      if (temp > 30) {
+        tempMessage = " High temperatures expected";
+      } else {
+        tempMessage = "Moderate temperatures expected";
+      }
+
+      return { rainMessage, tempMessage, crops };
     }
 
     // Handle form submission
     document.getElementById("farmForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      // Hide header, form, and footer
       document.getElementById("pageHeader").style.display = "none";
       document.getElementById("formSection").style.display = "none";
       document.getElementById("pageFooter").style.display = "none";
-
-      // Show results section
       document.getElementById("results").style.display = "block";
 
-      // Get selected district
       const district = document.getElementById("district").value;
-
-      // Fetch climate averages from Supabase
-      const climate = await getClimateAverage(district);
+      const climate = await getClimate(district);
 
       if (!climate) {
         document.getElementById("results").innerHTML =
@@ -123,23 +114,19 @@
         return;
       }
 
-      // Get recommendations
-      const rec = recommendCrops(climate.avgRain, climate.avgTemp);
+      const rec = recommendCrops(climate.rainfall_mm, climate.avg_temperature_c);
 
-      // Show climate info + recommendations
       document.getElementById("results").innerHTML =
         `<h2>District: ${district}</h2>
-         <h2>Average Rainfall (2019–2026): ${climate.avgRain} mm</h2>
-         <h2>Average Temperature: ${climate.avgTemp} °C</h2>
-         <p>Rainfall Level: ${rec.level}</p>
-         <h2>🌱 Recommended Crops</h2>
-         <ul>${rec.crops.map(c => `<li>${c}</li>`).join("")}</ul>
-         <h2>💧 Suggested Practices</h2>
-         <ul>${rec.practices.map(p => `<li>${p}</li>`).join("")}</ul>`;
+         <p>${rec.rainMessage}</p>
+         <p>${rec.tempMessage}</p>
+         <h2> Recommended Crops</h2>
+         <ul>${rec.crops.map(c => `<li>${c}</li>`).join("")}</ul>`;
     });
   </script>
 </body>
 </html>
+
 
 
 
