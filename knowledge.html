@@ -1,107 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana - Climate, Crops & Soil</title>
+  <title>AgriSmart Botswana - Decision Guide</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      text-align: center;
-
-      /* Farm background */
-      background-image: url('background.jpg'); /* Replace with your farm/crops image */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
-
-    /* Overlay for readability */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: -1;
-    }
-
-    header, section, footer {
-      background: rgba(0, 0, 0, 0.5);
-      margin: 20px;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    h1, h2 {
-      color: #ffd700; /* golden highlight */
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    ul li {
-      margin: 5px 0;
-    }
-
-    a {
-      color: #00ffcc;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
+    body { margin:0; font-family:Arial,sans-serif; color:#fff; text-align:center;
+      background-image:url('background.jpg'); background-size:cover;
+      background-position:center; background-attachment:fixed; }
+    body::before { content:""; position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.4); z-index:-1; }
+    header,section,footer { background:rgba(0,0,0,0.5); margin:20px; padding:15px; border-radius:10px; }
+    h1,h2 { color:#ffd700; }
+    p { text-align:justify; margin:15px auto; width:85%; }
+    ul { text-align:left; width:80%; margin:auto; }
+    li { margin:5px 0; }
+    a { color:#00ffcc; text-decoration:none; margin:0 10px; }
+    table { margin:auto; border-collapse:collapse; width:90%; }
+    th,td { border:1px solid #fff; padding:10px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>AgriSmart Botswana</h1>
-    <p>Climate • Crops • Soil</p>
+    <h1>🌍 Farming Decision Guide</h1>
   </header>
 
-  <!-- Climate Section -->
   <section>
-    <h2>Botswana Climate</h2>
-    <p>Botswana is semi-arid to arid. Rainfall is seasonal and varies by location and year. Drought is a major agricultural risk.</p>
-    <p>Rainfall + temperature + soil + crop type = key factors affecting agriculture.</p>
-  </section>
+    <h2>🌦 Botswana Climate Overview</h2>
+    <p>Botswana has a semi-arid to arid climate. Rainfall is highly variable, ranging from less than 250 mm in the southwest (Kgalagadi, Ghanzi) to over 650 mm in the north (Chobe, Okavango). Summers are hot (30–35 °C), winters are cooler (15–21 °C), and droughts are frequent.</p>
 
-  <!-- Crops Section -->
-  <section>
-    <h2>Know Your Crops</h2>
-    <h3>Drought-tolerant crops</h3>
+    <h2>🌱 Major Crops in Botswana</h2>
     <ul>
-      <li>Sorghum – tolerates dry conditions</li>
-      <li>Millet – suitable under low moisture</li>
-      <li>Cowpeas – resilient in semi-arid areas</li>
+      <li><b>Cereals:</b> Maize, sorghum, millet.</li>
+      <li><b>Legumes:</b> Cowpea, groundnut, mung bean, chickpea.</li>
+      <li><b>Root crops:</b> Cassava, sweet potato, yam.</li>
+      <li><b>Horticulture:</b> Vegetables (tomato, cabbage, onion, carrot, spinach).</li>
+      <li><b>Fruits:</b> Watermelon, citrus, emerging orchards in Chobe.</li>
     </ul>
 
-    <h3>Water-demanding crops</h3>
+    <h2>📊 Rainfall Classification</h2>
     <ul>
-      <li>Maize – requires adequate rainfall</li>
-      <li>Vegetables – higher water needs</li>
+      <li><b>Low Rainfall:</b> Less than 400 mm per year (Kgalagadi, Ghanzi).</li>
+      <li><b>Average Rainfall:</b> 400–800 mm per year (Central, Southern, Kgatleng).</li>
+      <li><b>High Rainfall:</b> More than 800 mm per year (Chobe, North East, Okavango).</li>
     </ul>
-    <p>Note: Crop tolerance depends on variety, soil, temperature, and management.</p>
+
+    <h2>🧪 Soil Types by District</h2>
+    <table>
+      <tr><th>District</th><th>Dominant Soil</th><th>Characteristics</th><th>Best Crops</th></tr>
+      <tr><td>Kgalagadi, Ghanzi</td><td>Sandy soils</td><td>Poor water retention, drought-prone</td><td>Millet, sorghum, cowpea</td></tr>
+      <tr><td>Pandamatenga (North)</td><td>Vertisols (clay-rich)</td><td>High water retention, prone to waterlogging</td><td>Sorghum, rice</td></tr>
+      <tr><td>Southern (Goodhope, Kanye)</td><td>Luvisols</td><td>Fertile, well-drained</td><td>Maize, vegetables</td></tr>
+      <tr><td>Okavango Delta</td><td>Alluvial soils</td><td>Moist, flood-affected</td><td>Rice, vegetables</td></tr>
+      <tr><td>Central District</td><td>Mixed soils</td><td>Balanced fertility, moderate rainfall</td><td>Maize, sunflower, horticulture</td></tr>
+    </table>
+
+    <h2>🧪 Soil Identification Guide</h2>
+    <ul>
+      <li><b>Sandy Soil:</b> Feels gritty, drains quickly, crops wilt within 4–5 days without rain.</li>
+      <li><b>Clay Soil:</b> Sticky when wet, cracks when dry, retains water but poor aeration.</li>
+      <li><b>Loamy Soil:</b> Balanced texture, holds water yet drains well, ideal for most crops.</li>
+    </ul>
+    <p>Farmers can test soil by moistening and rolling it into a ball: sandy crumbles, clay stays sticky, loam holds shape but breaks easily.</p>
   </section>
 
-  <!-- Soil Section -->
-  <section>
-    <h2>Know Your Soil</h2>
-    <p><b>Sandy soils:</b> Drain quickly, low water-holding capacity.</p>
-    <p><b>Clay soils:</b> Hold water, risk of waterlogging.</p>
-    <p><b>Loamy soils:</b> Balanced drainage and retention, favorable for many crops.</p>
-    <p>The same rainfall affects farms differently because soil characteristics vary.</p>
-  </section>
-
-  <!-- Navigation -->
   <footer>
-    <a href="index.html">Home</a> |
-    <a href="analyse.html">Analyse My Farm</a> |
-    <a href="calendar.html">Farming Calendar</a>
+    <a href="index.html">🏠 Home</a> | <a href="analyse.html">🔍 Analyse My Farm</a>
   </footer>
 </body>
 </html>
