@@ -5,9 +5,9 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-# Supabase Configuration
 SUPABASE_URL = "https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1"
-SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY"
+SUPABASE_KEY = "sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD"
+
 
 @app.route("/")
 def home():
@@ -20,24 +20,31 @@ def home():
 def analyse():
 
     data = request.get_json()
+
     district = data.get("district")
+
+    if not district:
+        return jsonify({
+            "error": "District is required"
+        }), 400
 
     try:
 
-        # Fetch all historical records for district
         response = requests.get(
-            f"{SUPABASE_URL}/climate_data?district=eq.{district}",
+            f"{SUPABASE_URL}/climate_data?district=eq.{district}&order=year.asc",
             headers={
                 "apikey": SUPABASE_KEY,
                 "Authorization": f"Bearer {SUPABASE_KEY}"
             }
         )
 
+        response.raise_for_status()
+
         records = response.json()
 
         if not records:
             return jsonify({
-                "error": "No climate data found"
+                "error": f"No climate data found for {district}"
             }), 404
 
         rainfall_values = [
@@ -60,8 +67,9 @@ def analyse():
             1
         )
 
-        # Rainfall analysis
+        # Rainfall Analysis
         if avg_rainfall < 400:
+
             rainfall_category = "Low Rainfall"
             drought_risk = "High"
 
@@ -72,31 +80,35 @@ def analyse():
                 "Groundnut"
             ]
 
-            recommendations = [
-                "Use drought-resistant crops",
+            practices = [
+                "Use drought-resistant seed varieties",
                 "Apply mulching",
                 "Harvest rainwater",
-                "Use drip irrigation where possible"
+                "Use drip irrigation",
+                "Plant immediately after effective rainfall"
             ]
 
         elif avg_rainfall < 800:
+
             rainfall_category = "Moderate Rainfall"
             drought_risk = "Moderate"
 
             crops = [
                 "Maize",
                 "Sunflower",
-                "Watermelon",
-                "Groundnuts"
+                "Groundnuts",
+                "Watermelon"
             ]
 
-            recommendations = [
-                "Use moisture conservation practices",
-                "Monitor seasonal rainfall",
+            practices = [
+                "Monitor rainfall patterns",
+                "Use crop rotation",
+                "Maintain soil moisture",
                 "Diversify crop production"
             ]
 
         else:
+
             rainfall_category = "High Rainfall"
             drought_risk = "Low"
 
@@ -107,13 +119,13 @@ def analyse():
                 "Wet-tolerant Maize"
             ]
 
-            recommendations = [
-                "Improve drainage",
+            practices = [
+                "Improve field drainage",
                 "Monitor fungal diseases",
                 "Take advantage of longer growing seasons"
             ]
 
-        # Temperature analysis
+        # Temperature Analysis
         if avg_temperature < 20:
             temperature_category = "Low Temperature"
             heat_risk = "Low"
@@ -126,18 +138,33 @@ def analyse():
             temperature_category = "High Temperature"
             heat_risk = "High"
 
-        # Trend analysis
+        # Trend Analysis
         rainfall_trend = "Stable"
 
-        if len(rainfall_values) >= 2:
-            if rainfall_values[-1] < rainfall_valuesrainfall_trend = "Decreasing"
-            elif rainfall_values[-1] > rainfall_valuesrainfall_trend = "Increasing"
+        if len(rainfall_values) > 1:
+
+            if rainfall_values[-1] > rainfall_values[0]:
+                rainfall_trend = "Increasing"
+
+            elif rainfall_values[-1] < rainfall_values[0]:
+                rainfall_trend = "Decreasing"
 
         temperature_trend = "Stable"
 
-        if len(temperature_values) >= 2:
-            if temperature_values[-1] > temperature_valuestemperature_trend = "Increasing"
-            elif temperature_values[-1] < temperature_valuestemperature_trend = "Decreasing"
+        if len(temperature_values) > 1:
+
+            if temperature_values[-1] > temperature_values[0]:
+                temperature_trend = "Increasing"
+
+            elif temperature_values[-1] < temperature_values[0]:
+                temperature_trend = "Decreasing"
+
+        summary = (
+            f"{district} shows {rainfall_category.lower()} "
+            f"and {temperature_category.lower()}. "
+            f"Drought risk is {drought_risk.lower()} "
+            f"while heat risk is {heat_risk.lower()}."
+        )
 
         return jsonify({
 
@@ -163,13 +190,9 @@ def analyse():
 
             "recommended_crops": crops,
 
-            "recommended_practices": recommendations,
+            "recommended_practices": practices,
 
-            "summary":
-            f"{district} experiences {rainfall_category.lower()} "
-            f"and {temperature_category.lower()}. "
-            f"Drought risk is {drought_risk.lower()} "
-            f"and heat risk is {heat_risk.lower()}."
+            "summary": summary
 
         })
 
