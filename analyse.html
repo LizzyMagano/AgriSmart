@@ -1,285 +1,273 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana - Analyse My Farm</title>
+    <title>AgriSmart Botswana - Analyse My Farm</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      text-align: center;
-      background-image: url('images/background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: -1;
-    }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: -1;
+        }
 
-    header,
-    section,
-    footer {
-      background: rgba(0,0,0,0.5);
-      margin: 20px;
-      padding: 15px;
-      border-radius: 10px;
-    }
+        header,
+        section,
+        footer {
+            background: rgba(0,0,0,0.5);
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
 
-    h1, h2 {
-      color: #ffd700;
-    }
+        h1, h2, h3 {
+            color: #ffd700;
+        }
 
-    label {
-      display: block;
-      margin: 10px 0;
-    }
+        select,
+        input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+        }
 
-    select,
-    input {
-      padding: 8px;
-      margin: 5px;
-      border-radius: 5px;
-      border: none;
-    }
+        input[type="submit"] {
+            cursor: pointer;
+            background: #ffd700;
+            font-weight: bold;
+        }
 
-    input[type="submit"] {
-      cursor: pointer;
-      background: #ffd700;
-      font-weight: bold;
-    }
+        a {
+            color: #00ffcc;
+            text-decoration: none;
+        }
 
-    a {
-      color: #00ffcc;
-      text-decoration: none;
-      margin: 0 10px;
-    }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+        li {
+            margin: 5px 0;
+        }
 
-    li {
-      margin: 6px 0;
-    }
+        #results {
+            display: none;
+        }
 
-    #results {
-      display: none;
-    }
-  </style>
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ffd700;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
-<header id="pageHeader">
-  <h1>Analyse My Farm</h1>
+<header>
+    <h1>Analyse My Farm</h1>
 </header>
 
-<section id="formSection">
+<section>
 
-  <form id="farmForm">
+    <form id="farmForm">
 
-    <label>
-      District:
+        <label>
+            District:
+        </label>
 
-      <select id="district">
+        <select id="district">
 
-        <option>Kgalagadi</option>
-        <option>Ghanzi</option>
-        <option>Chobe</option>
-        <option>North West</option>
-        <option>Central</option>
-        <option>Southern</option>
-        <option>Kweneng</option>
-        <option>Kgatleng</option>
-        <option>South East</option>
-        <option>North East</option>
-        <option>Northern</option>
+            <option>Kgalagadi</option>
+            <option>Ghanzi</option>
+            <option>Chobe</option>
+            <option>North West</option>
+            <option>Central</option>
+            <option>Southern</option>
+            <option>Kweneng</option>
+            <option>Kgatleng</option>
+            <option>South East</option>
+            <option>North East</option>
+            <option>Northern</option>
 
-      </select>
+        </select>
 
-    </label>
+        <br><br>
 
-    <input type="submit" value="Analyse Farm">
+        <input type="submit" value="Analyse Farm">
 
-  </form>
+    </form>
 
 </section>
 
 <section id="results"></section>
 
-<footer id="pageFooter">
-  <a href="index.html">Home</a> |
-  <a href="calendar.html">Farming Calendar</a>
+<footer>
+    <a href="index.html">Home</a> |
+    <a href="calendar.html">Farming Calendar</a>
 </footer>
 
 <script>
 
-const SUPABASE_URL =
-"https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1/";
-
-const SUPABASE_KEY =
-"sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD";
-
-
-async function getClimate(district) {
-
-  try {
+async function analyseFarm(district) {
 
     const response = await fetch(
-      `${SUPABASE_URL}climate_data?district=eq.${district}&order=year.desc&limit=1`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
+        "https://agrismart-1-t47g.onrender.com/analyse",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                district: district
+            })
         }
-      }
     );
 
-    const data = await response.json();
-
-    if (data.length > 0) {
-      return data[0];
-    }
-
-    return null;
-
-  } catch (error) {
-
-    console.log(error);
-    return null;
-
-  }
-
+    return await response.json();
 }
-
-
-function recommendCrops(rainfall, temp) {
-
-  let rainMessage = "";
-  let tempMessage = "";
-  let crops = [];
-
-  if (rainfall < 400) {
-
-    rainMessage = "Low rainfall expected";
-    crops = [
-      "Sorghum",
-      "Millet",
-      "Cowpea",
-      "Groundnut"
-    ];
-
-  }
-
-  else if (rainfall < 800) {
-
-    rainMessage = "Average rainfall expected";
-    crops = [
-      "Maize",
-      "Sunflower",
-      "Watermelon",
-      "Groundnuts"
-    ];
-
-  }
-
-  else {
-
-    rainMessage = "High rainfall expected";
-    crops = [
-      "Rice",
-      "Cassava",
-      "Vegetables",
-      "Wet-tolerant Maize"
-    ];
-
-  }
-
-  if (temp > 30) {
-
-    tempMessage = "High temperatures expected";
-
-  }
-
-  else {
-
-    tempMessage = "Moderate temperatures expected";
-
-  }
-
-  return {
-    rainMessage,
-    tempMessage,
-    crops
-  };
-}
-
 
 document.getElementById("farmForm")
-.addEventListener("submit", async function(e) {
+.addEventListener("submit", async function(event) {
 
-  e.preventDefault();
+    event.preventDefault();
 
-  const district =
-    document.getElementById("district").value;
+    const district =
+        document.getElementById("district").value;
 
-  document.getElementById("results").style.display = "block";
+    const results =
+        document.getElementById("results");
 
-  document.getElementById("results").innerHTML =
-    "<h2>Loading climate data...</h2>";
+    results.style.display = "block";
 
-  const climate = await getClimate(district);
+    results.innerHTML =
+        "<h2>Analysing climate data...</h2>";
 
-  if (!climate) {
+    try {
 
-    document.getElementById("results").innerHTML = `
-      <h2>No climate data found for ${district}</h2>
-    `;
+        const climate =
+            await analyseFarm(district);
 
-    return;
-  }
+        if (climate.error) {
 
-  const rainfall =
-    climate.rainfall_mm;
+            results.innerHTML = `
+                <h2>Error</h2>
+                <p>${climate.error}</p>
+            `;
 
-  const temperature =
-    climate.avg_temperature_c;
+            return;
+        }
 
-  const rec =
-    recommendCrops(rainfall, temperature);
+        results.innerHTML = `
 
-  document.getElementById("results").innerHTML = `
+            <h2>${climate.district}</h2>
 
-    <h2>${district}</h2>
+            <h3>Climate Summary</h3>
 
-    <p><strong>Average Temperature:</strong>
-    ${temperature} °C</p>
+            <p>${climate.summary}</p>
 
-    <p><strong>Total Rainfall:</strong>
-    ${rainfall} mm</p>
+            <hr>
 
-    <p>${rec.rainMessage}</p>
+            <p>
+                <strong>Years Analysed:</strong>
+                ${climate.years_analysed}
+            </p>
 
-    <p>${rec.tempMessage}</p>
+            <p>
+                <strong>Average Rainfall:</strong>
+                ${climate.average_rainfall_mm} mm
+            </p>
 
-    <h2>Recommended Crops</h2>
+            <p>
+                <strong>Average Temperature:</strong>
+                ${climate.average_temperature_c} °C
+            </p>
 
-    <ul>
-      ${rec.crops.map(c => `<li>${c}</li>`).join("")}
-    </ul>
+            <p>
+                <strong>Rainfall Category:</strong>
+                ${climate.rainfall_category}
+            </p>
 
-  `;
+            <p>
+                <strong>Temperature Category:</strong>
+                ${climate.temperature_category}
+            </p>
+
+            <p>
+                <strong>Drought Risk:</strong>
+                ${climate.drought_risk}
+            </p>
+
+            <p>
+                <strong>Heat Risk:</strong>
+                ${climate.heat_risk}
+            </p>
+
+            <p>
+                <strong>Rainfall Trend:</strong>
+                ${climate.rainfall_trend}
+            </p>
+
+            <p>
+                <strong>Temperature Trend:</strong>
+                ${climate.temperature_trend}
+            </p>
+
+            <hr>
+
+            <h3>Recommended Crops</h3>
+
+            <ul>
+                ${climate.recommended_crops
+                    .map(crop => `<li>${crop}</li>`)
+                    .join("")}
+            </ul>
+
+            <h3>Recommended Farming Practices</h3>
+
+            <ul>
+                ${climate.recommended_practices
+                    .map(practice => `<li>${practice}</li>`)
+                    .join("")}
+            </ul>
+
+            <br>
+
+            <button onclick="location.reload()">
+                Analyse Another District
+            </button>
+
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        results.innerHTML = `
+            <h2>Connection Error</h2>
+            <p>Could not connect to the AgriSmart analysis service.</p>
+        `;
+    }
 });
 
 </script>
