@@ -53,6 +53,15 @@
             font-weight: bold;
         }
 
+        button {
+            padding: 10px 20px;
+            background: #ffd700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         a {
             color: #00ffcc;
             text-decoration: none;
@@ -69,15 +78,6 @@
 
         #results {
             display: none;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background: #ffd700;
-            cursor: pointer;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -97,7 +97,6 @@
         </label>
 
         <select id="district">
-
             <option>Kgalagadi</option>
             <option>Ghanzi</option>
             <option>Chobe</option>
@@ -109,7 +108,6 @@
             <option>South East</option>
             <option>North East</option>
             <option>Northern</option>
-
         </select>
 
         <br><br>
@@ -161,7 +159,7 @@ document.getElementById("farmForm")
     results.style.display = "block";
 
     results.innerHTML =
-        "<h2>Analysing climate data...</h2>";
+        "<h2>Analysing farm conditions...</h2>";
 
     try {
 
@@ -182,9 +180,9 @@ document.getElementById("farmForm")
 
             <h2>${climate.district}</h2>
 
-            <h3>Climate Summary</h3>
+            <h3>AI Farm Advice</h3>
 
-            <p>${climate.summary}</p>
+            <p>${climate.ai_advice}</p>
 
             <hr>
 
@@ -194,22 +192,12 @@ document.getElementById("farmForm")
             </p>
 
             <p>
-                <strong>Average Rainfall:</strong>
-                ${climate.average_rainfall_mm} mm
-            </p>
-
-            <p>
-                <strong>Average Temperature:</strong>
-                ${climate.average_temperature_c} °C
-            </p>
-
-            <p>
-                <strong>Rainfall Category:</strong>
+                <strong>Rainfall Conditions:</strong>
                 ${climate.rainfall_category}
             </p>
 
             <p>
-                <strong>Temperature Category:</strong>
+                <strong>Temperature Conditions:</strong>
                 ${climate.temperature_category}
             </p>
 
@@ -221,6 +209,11 @@ document.getElementById("farmForm")
             <p>
                 <strong>Heat Risk:</strong>
                 ${climate.heat_risk}
+            </p>
+
+            <p>
+                <strong>Flood Risk:</strong>
+                ${climate.flood_risk}
             </p>
 
             <p>
@@ -265,7 +258,7 @@ document.getElementById("farmForm")
 
         results.innerHTML = `
             <h2>Connection Error</h2>
-            <p>Could not connect to the AgriSmart analysis service.</p>
+            <p>Could not connect to AgriSmart analysis services.</p>
         `;
     }
 });
