@@ -2,128 +2,288 @@
 <html>
 <head>
   <title>AgriSmart Botswana - Analyse My Farm</title>
+
   <style>
-    body { margin:0; font-family:Arial,sans-serif; color:#fff; text-align:center;
-      background-image:url('images/background.jpg'); background-size:cover;
-      background-position:center; background-attachment:fixed; }
-    body::before { content:""; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.4); z-index:-1; }
-    header,section,footer { background:rgba(0,0,0,0.5); margin:20px; padding:15px; border-radius:10px; }
-    h1,h2 { color:#ffd700; }
-    label { display:block; margin:10px 0; }
-    input,select { padding:5px; margin:5px; }
-    a { color:#00ffcc; text-decoration:none; margin:0 10px; }
-    ul { list-style:none; padding:0; }
-    li { margin:5px 0; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      background-image: url('images/background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+
+    header,
+    section,
+    footer {
+      background: rgba(0,0,0,0.5);
+      margin: 20px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    h1, h2 {
+      color: #ffd700;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+
+    select,
+    input {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    input[type="submit"] {
+      cursor: pointer;
+      background: #ffd700;
+      font-weight: bold;
+    }
+
+    a {
+      color: #00ffcc;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    #results {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
-  <header id="pageHeader">
-    <h1> Analyse My Farm</h1>
-  </header>
 
-  <!-- Farm Analysis Form -->
-  <section id="formSection">
-    <form id="farmForm">
-      <label>District:
-        <select id="district">
-          <option>Kgalagadi</option>
-          <option>Ghanzi</option>
-          <option>Chobe</option>
-          <option>North West</option>
-          <option>Central</option>
-          <option>Southern</option>
-          <option>Kweneng</option>
-          <option>Kgatleng</option>
-          <option>South East</option>
-          <option>North East</option>
-          <option>Northern</option>
-        </select>
-      </label>
-      <input type="submit" value="Analyse Farm">
-    </form>
-  </section>
+<header id="pageHeader">
+  <h1>Analyse My Farm</h1>
+</header>
 
-  <!-- Results Section -->
-  <section id="results" style="display:none;"></section>
+<section id="formSection">
 
-  <footer id="pageFooter">
-    <a href="index.html"> Home</a> | <a href="calendar.html">Farming Calendar</a>
-  </footer>
+  <form id="farmForm">
 
-  <script>
-    const SUPABASE_URL = "https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1/";
-    const SUPABASE_KEY = "sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD";
+    <label>
+      District:
 
-    // Fetch latest climate data for a district
-    async function getClimate(district) {
-      const response = await fetch(
-        `${SUPABASE_URL}climate_data?district=eq.${district}&order=year.desc&limit=1`,
-        {
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: `Bearer ${SUPABASE_KEY}`
-          }
+      <select id="district">
+
+        <option>Kgalagadi</option>
+        <option>Ghanzi</option>
+        <option>Chobe</option>
+        <option>North West</option>
+        <option>Central</option>
+        <option>Southern</option>
+        <option>Kweneng</option>
+        <option>Kgatleng</option>
+        <option>South East</option>
+        <option>North East</option>
+        <option>Northern</option>
+
+      </select>
+
+    </label>
+
+    <input type="submit" value="Analyse Farm">
+
+  </form>
+
+</section>
+
+<section id="results"></section>
+
+<footer id="pageFooter">
+  <a href="index.html">Home</a> |
+  <a href="calendar.html">Farming Calendar</a>
+</footer>
+
+<script>
+
+const SUPABASE_URL =
+"https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+"sb_publishable_urW9_MF4ZO3kN4u6apAvdw_NMqjG8cD";
+
+
+async function getClimate(district) {
+
+  try {
+
+    const response = await fetch(
+      `${SUPABASE_URL}climate_data?district=eq.${district}&order=year.desc&limit=1`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
         }
-      );
-      const data = await response.json();
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.length > 0) {
       return data[0];
     }
 
-    // Recommend crops based on rainfall/temperature expectations
-    function recommendCrops(rainfall, temp) {
-      let rainMessage = "";
-      let tempMessage = "";
-      let crops = [];
+    return null;
 
-      if (rainfall < 400) {
-        rainMessage = "Low rainfall expected";
-        crops = ["Sorghum", "Millet", "Cowpea", "Groundnut"];
-      } else if (rainfall < 800) {
-        rainMessage = " Average rainfall expected";
-        crops = ["Maize", "Sunflower", "Watermelon", "Groundnuts"];
-      } else {
-        rainMessage = "High rainfall expected";
-        crops = ["Rice", "Cassava", "Vegetables", "Wet-tolerant Maize"];
-      }
+  } catch (error) {
 
-      if (temp > 30) {
-        tempMessage = " High temperatures expected";
-      } else {
-        tempMessage = "Moderate temperatures expected";
-      }
+    console.log(error);
+    return null;
 
-      return { rainMessage, tempMessage, crops };
-    }
+  }
 
-    // Handle form submission
-    document.getElementById("farmForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+}
 
-      document.getElementById("pageHeader").style.display = "none";
-      document.getElementById("formSection").style.display = "none";
-      document.getElementById("pageFooter").style.display = "none";
-      document.getElementById("results").style.display = "block";
 
-      const district = document.getElementById("district").value;
-      const climate = await getClimate(district);
+function recommendCrops(rainfall, temp) {
 
-      if (!climate) {
-        document.getElementById("results").innerHTML =
-          `<h2>No climate data found for ${district}</h2>`;
-        return;
-      }
+  let rainMessage = "";
+  let tempMessage = "";
+  let crops = [];
 
-      const rec = recommendCrops(climate.rainfall_mm, climate.avg_temperature_c);
+  if (rainfall < 400) {
 
-      document.getElementById("results").innerHTML =
-        `<h2>District: ${district}</h2>
-         <p>${rec.rainMessage}</p>
-         <p>${rec.tempMessage}</p>
-         <h2> Recommended Crops</h2>
-         <ul>${rec.crops.map(c => `<li>${c}</li>`).join("")}</ul>`;
-    });
-  </script>
+    rainMessage = "Low rainfall expected";
+    crops = [
+      "Sorghum",
+      "Millet",
+      "Cowpea",
+      "Groundnut"
+    ];
+
+  }
+
+  else if (rainfall < 800) {
+
+    rainMessage = "Average rainfall expected";
+    crops = [
+      "Maize",
+      "Sunflower",
+      "Watermelon",
+      "Groundnuts"
+    ];
+
+  }
+
+  else {
+
+    rainMessage = "High rainfall expected";
+    crops = [
+      "Rice",
+      "Cassava",
+      "Vegetables",
+      "Wet-tolerant Maize"
+    ];
+
+  }
+
+  if (temp > 30) {
+
+    tempMessage = "High temperatures expected";
+
+  }
+
+  else {
+
+    tempMessage = "Moderate temperatures expected";
+
+  }
+
+  return {
+    rainMessage,
+    tempMessage,
+    crops
+  };
+}
+
+
+document.getElementById("farmForm")
+.addEventListener("submit", async function(e) {
+
+  e.preventDefault();
+
+  const district =
+    document.getElementById("district").value;
+
+  document.getElementById("results").style.display = "block";
+
+  document.getElementById("results").innerHTML =
+    "<h2>Loading climate data...</h2>";
+
+  const climate = await getClimate(district);
+
+  if (!climate) {
+
+    document.getElementById("results").innerHTML = `
+      <h2>No climate data found for ${district}</h2>
+    `;
+
+    return;
+  }
+
+  const rainfall =
+    climate.rainfall_mm;
+
+  const temperature =
+    climate.avg_temperature_c;
+
+  const rec =
+    recommendCrops(rainfall, temperature);
+
+  document.getElementById("results").innerHTML = `
+
+    <h2>${district}</h2>
+
+    <p><strong>Average Temperature:</strong>
+    ${temperature} °C</p>
+
+    <p><strong>Total Rainfall:</strong>
+    ${rainfall} mm</p>
+
+    <p>${rec.rainMessage}</p>
+
+    <p>${rec.tempMessage}</p>
+
+    <h2>Recommended Crops</h2>
+
+    <ul>
+      ${rec.crops.map(c => `<li>${c}</li>`).join("")}
+    </ul>
+
+  `;
+});
+
+</script>
+
 </body>
 </html>
 
