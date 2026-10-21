@@ -5,14 +5,9 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-DISTRICTS = {
-    "Kgalagadi": {
-        "latitude": -26.02,
-        "longitude": 22.40,
-        "location": "Tsabong, Kgalagadi"
-    }
-}
-
+# Supabase Configuration
+SUPABASE_URL = "https://imewpqufkvhwzxjbspfe.supabase.co/rest/v1"
+SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY"
 
 @app.route("/")
 def home():
@@ -21,80 +16,165 @@ def home():
     })
 
 
-@app.route("/climate", methods=["POST"])
-def climate():
+@app.route("/analyse", methods=["POST"])
+def analyse():
 
     data = request.get_json()
-
     district = data.get("district")
-
-    if district not in DISTRICTS:
-        return jsonify({
-            "error": "Unsupported district"
-        }), 400
-
-    place = DISTRICTS[district]
 
     try:
 
+        # Fetch all historical records for district
         response = requests.get(
-            "https://archive-api.open-meteo.com/v1/archive",
-            params={
-                "latitude": place["latitude"],
-                "longitude": place["longitude"],
-                "start_date": "2024-01-01",
-                "end_date": "2024-12-31",
-                "daily": "temperature_2m_mean,precipitation_sum",
-                "timezone": "Africa/Gaborone"
-            },
-            timeout=30
+            f"{SUPABASE_URL}/climate_data?district=eq.{district}",
+            headers={
+                "apikey": SUPABASE_KEY,
+                "Authorization": f"Bearer {SUPABASE_KEY}"
+            }
         )
 
-        response.raise_for_status()
+        records = response.json()
 
-        daily = response.json()["daily"]
+        if not records:
+            return jsonify({
+                "error": "No climate data found"
+            }), 404
 
-        temperatures = [
-            t for t in daily["temperature_2m_mean"]
-            if t is not None
+        rainfall_values = [
+            row["rainfall_mm"]
+            for row in records
         ]
 
-        rainfall = [
-            r for r in daily["precipitation_sum"]
-            if r is not None
+        temperature_values = [
+            row["avg_temperature_c"]
+            for row in records
         ]
 
-        avg_temp = sum(temperatures) / len(temperatures)
-        total_rainfall = sum(rainfall)
+        avg_rainfall = round(
+            sum(rainfall_values) / len(rainfall_values),
+            1
+        )
 
-        if avg_temp < 20:
-            temp_category = "Low Temperature"
-        elif avg_temp < 30:
-            temp_category = "Moderate Temperature"
-        else:
-            temp_category = "High Temperature"
+        avg_temperature = round(
+            sum(temperature_values) / len(temperature_values),
+            1
+        )
 
-        if total_rainfall < 400:
+        # Rainfall analysis
+        if avg_rainfall < 400:
             rainfall_category = "Low Rainfall"
-            crops = ["Sorghum", "Millet", "Cowpea", "Groundnut"]
+            drought_risk = "High"
 
-        elif total_rainfall < 800:
+            crops = [
+                "Sorghum",
+                "Millet",
+                "Cowpea",
+                "Groundnut"
+            ]
+
+            recommendations = [
+                "Use drought-resistant crops",
+                "Apply mulching",
+                "Harvest rainwater",
+                "Use drip irrigation where possible"
+            ]
+
+        elif avg_rainfall < 800:
             rainfall_category = "Moderate Rainfall"
-            crops = ["Maize", "Sunflower", "Watermelon"]
+            drought_risk = "Moderate"
+
+            crops = [
+                "Maize",
+                "Sunflower",
+                "Watermelon",
+                "Groundnuts"
+            ]
+
+            recommendations = [
+                "Use moisture conservation practices",
+                "Monitor seasonal rainfall",
+                "Diversify crop production"
+            ]
 
         else:
             rainfall_category = "High Rainfall"
-            crops = ["Rice", "Cassava", "Vegetables"]
+            drought_risk = "Low"
+
+            crops = [
+                "Rice",
+                "Cassava",
+                "Vegetables",
+                "Wet-tolerant Maize"
+            ]
+
+            recommendations = [
+                "Improve drainage",
+                "Monitor fungal diseases",
+                "Take advantage of longer growing seasons"
+            ]
+
+        # Temperature analysis
+        if avg_temperature < 20:
+            temperature_category = "Low Temperature"
+            heat_risk = "Low"
+
+        elif avg_temperature < 30:
+            temperature_category = "Moderate Temperature"
+            heat_risk = "Moderate"
+
+        else:
+            temperature_category = "High Temperature"
+            heat_risk = "High"
+
+        # Trend analysis
+        rainfall_trend = "Stable"
+
+        if len(rainfall_values) >= 2:
+            if rainfall_values[-1] < rainfall_valuesrainfall_trend = "Decreasing"
+            elif rainfall_values[-1] > rainfall_valuesrainfall_trend = "Increasing"
+
+        temperature_trend = "Stable"
+
+        if len(temperature_values) >= 2:
+            if temperature_values[-1] > temperature_valuestemperature_trend = "Increasing"
+            elif temperature_values[-1] < temperature_valuestemperature_trend = "Decreasing"
 
         return jsonify({
+
             "district": district,
-            "location": place["location"],
-            "temperature": temp_category,
-            "rainfall": rainfall_category,
-            "recommended_crops": crops
+
+            "years_analysed": len(records),
+
+            "average_rainfall_mm": avg_rainfall,
+
+            "average_temperature_c": avg_temperature,
+
+            "rainfall_category": rainfall_category,
+
+            "temperature_category": temperature_category,
+
+            "drought_risk": drought_risk,
+
+            "heat_risk": heat_risk,
+
+            "rainfall_trend": rainfall_trend,
+
+            "temperature_trend": temperature_trend,
+
+            "recommended_crops": crops,
+
+            "recommended_practices": recommendations,
+
+            "summary":
+            f"{district} experiences {rainfall_category.lower()} "
+            f"and {temperature_category.lower()}. "
+            f"Drought risk is {drought_risk.lower()} "
+            f"and heat risk is {heat_risk.lower()}."
+
         })
 
     except Exception as e:
+
         return jsonify({
             "error": str(e)
         }), 500
