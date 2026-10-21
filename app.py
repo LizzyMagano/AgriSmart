@@ -19,16 +19,15 @@ def home():
 @app.route("/analyse", methods=["POST"])
 def analyse():
 
-    data = request.get_json()
-
-    district = data.get("district")
-
-    if not district:
-        return jsonify({
-            "error": "District is required"
-        }), 400
-
     try:
+
+        data = request.get_json()
+        district = data.get("district")
+
+        if not district:
+            return jsonify({
+                "error": "District is required"
+            }), 400
 
         response = requests.get(
             f"{SUPABASE_URL}/climate_data?district=eq.{district}&order=year.asc",
@@ -47,15 +46,12 @@ def analyse():
                 "error": f"No climate data found for {district}"
             }), 404
 
-        rainfall_values = [
-            row["rainfall_mm"]
-            for row in records
-        ]
+        rainfall_values = []
+        temperature_values = []
 
-        temperature_values = [
-            row["avg_temperature_c"]
-            for row in records
-        ]
+        for row in records:
+            rainfall_values.append(row["rainfall_mm"])
+            temperature_values.append(row["avg_temperature_c"])
 
         avg_rainfall = round(
             sum(rainfall_values) / len(rainfall_values),
@@ -120,21 +116,24 @@ def analyse():
             ]
 
             practices = [
-                "Improve field drainage",
+                "Improve drainage",
                 "Monitor fungal diseases",
                 "Take advantage of longer growing seasons"
             ]
 
         # Temperature Analysis
         if avg_temperature < 20:
+
             temperature_category = "Low Temperature"
             heat_risk = "Low"
 
         elif avg_temperature < 30:
+
             temperature_category = "Moderate Temperature"
             heat_risk = "Moderate"
 
         else:
+
             temperature_category = "High Temperature"
             heat_risk = "High"
 
@@ -143,57 +142,49 @@ def analyse():
 
         if len(rainfall_values) > 1:
 
-            if rainfall_values[-1] > rainfall_values[0]:
+            first_rainfall = rainfall_values[0]
+            last_rainfall = rainfall_values[-1]
+
+            if last_rainfall > first_rainfall:
                 rainfall_trend = "Increasing"
 
-            elif rainfall_values[-1] < rainfall_values[0]:
+            elif last_rainfall < first_rainfall:
                 rainfall_trend = "Decreasing"
 
         temperature_trend = "Stable"
 
         if len(temperature_values) > 1:
 
-            if temperature_values[-1] > temperature_values[0]:
+            first_temperature = temperature_values[0]
+            last_temperature = temperature_values[-1]
+
+            if last_temperature > first_temperature:
                 temperature_trend = "Increasing"
 
-            elif temperature_values[-1] < temperature_values[0]:
+            elif last_temperature < first_temperature:
                 temperature_trend = "Decreasing"
 
         summary = (
-            f"{district} shows {rainfall_category.lower()} "
+            f"{district} experiences {rainfall_category.lower()} "
             f"and {temperature_category.lower()}. "
-            f"Drought risk is {drought_risk.lower()} "
-            f"while heat risk is {heat_risk.lower()}."
+            f"Drought risk is {drought_risk.lower()} and "
+            f"heat risk is {heat_risk.lower()}."
         )
 
         return jsonify({
-
             "district": district,
-
             "years_analysed": len(records),
-
             "average_rainfall_mm": avg_rainfall,
-
             "average_temperature_c": avg_temperature,
-
             "rainfall_category": rainfall_category,
-
             "temperature_category": temperature_category,
-
             "drought_risk": drought_risk,
-
             "heat_risk": heat_risk,
-
             "rainfall_trend": rainfall_trend,
-
             "temperature_trend": temperature_trend,
-
             "recommended_crops": crops,
-
             "recommended_practices": practices,
-
             "summary": summary
-
         })
 
     except Exception as e:
