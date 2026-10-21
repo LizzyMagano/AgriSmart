@@ -36,6 +36,12 @@ def analyse():
     try:
 
         data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "error": "Request body required"
+            }), 400
+
         district = data.get("district")
 
         if not district:
@@ -44,12 +50,14 @@ def analyse():
             }), 400
 
         # HISTORICAL DATA FROM SUPABASE
+
         response = requests.get(
             f"{SUPABASE_URL}/climate_data?district=eq.{district}&order=year.asc",
             headers={
                 "apikey": SUPABASE_KEY,
                 "Authorization": f"Bearer {SUPABASE_KEY}"
-            }
+            },
+            timeout=30
         )
 
         response.raise_for_status()
@@ -65,8 +73,14 @@ def analyse():
         temperature_values = []
 
         for row in records:
-            rainfall_values.append(float(row["rainfall_mm"]))
-            temperature_values.append(float(row["avg_temperature_c"]))
+
+            rainfall_values.append(
+                float(row["rainfall_mm"])
+            )
+
+            temperature_values.append(
+                float(row["avg_temperature_c"])
+            )
 
         avg_rainfall = round(
             sum(rainfall_values) / len(rainfall_values),
@@ -78,7 +92,8 @@ def analyse():
             1
         )
 
-        # RECENT DATA FROM OPEN-METEO
+        # CURRENT DATA FROM OPEN-METEO
+
         recent_temp = None
         recent_rain = None
 
@@ -88,7 +103,7 @@ def analyse():
 
             if coords:
 
-                meteo = requests.get(
+                meteo_response = requests.get(
                     "https://api.open-meteo.com/v1/forecast",
                     params={
                         "latitude": coords["lat"],
@@ -100,27 +115,28 @@ def analyse():
                     timeout=20
                 )
 
-                meteo.raise_for_status()
+                meteo_response.raise_for_status()
 
-                meteo_data = meteo.json()
+                meteo_data = meteo_response.json()
 
                 recent_temp = (
                     meteo_data.get("current_weather", {})
                     .get("temperature")
                 )
 
-                rainfall_daily = (
+                daily_rain = (
                     meteo_data.get("daily", {})
                     .get("precipitation_sum", [])
                 )
 
-                if rainfall_daily:
-                    recent_rain = rainfall_daily[0]
+                if daily_rain:
+                    recent_rain = daily_rain[0]
 
         except Exception:
             pass
 
         # RAINFALL ANALYSIS
+
         if avg_rainfall < 400:
 
             rainfall_category = "Low Rainfall"
@@ -135,11 +151,11 @@ def analyse():
             ]
 
             practices = [
-                "Mulching",
-                "Rainwater harvesting",
-                "Drip irrigation",
-                "Early planting",
-                "Drought resistant seed varieties"
+                "Apply mulching",
+                "Harvest rainwater",
+                "Use drip irrigation",
+                "Plant drought-resistant crops",
+                "Plant immediately after effective rainfall"
             ]
 
         elif avg_rainfall < 800:
@@ -156,9 +172,10 @@ def analyse():
             ]
 
             practices = [
-                "Crop rotation",
-                "Soil moisture conservation",
-                "Monitor seasonal rainfall"
+                "Use crop rotation",
+                "Monitor rainfall patterns",
+                "Maintain soil moisture",
+                "Diversify crop production"
             ]
 
         else:
@@ -177,10 +194,11 @@ def analyse():
             practices = [
                 "Improve drainage",
                 "Monitor fungal diseases",
-                "Diversify crop production"
+                "Diversify crops"
             ]
 
         # TEMPERATURE ANALYSIS
+
         if avg_temperature < 20:
 
             temperature_category = "Low Temperature"
@@ -196,7 +214,8 @@ def analyse():
             temperature_category = "High Temperature"
             heat_risk = "High"
 
-        # RAINFALL TREND
+        # TREND ANALYSIS
+
         rainfall_trend = "Stable"
 
         if len(rainfall_values) > 1:
@@ -210,29 +229,29 @@ def analyse():
             elif last_rainfall < first_rainfall:
                 rainfall_trend = "Decreasing"
 
-        # TEMPERATURE TREND
         temperature_trend = "Stable"
 
         if len(temperature_values) > 1:
 
-            first_temp = temperature_values[0]
-            last_temp = temperature_values[-1]
+            first_temperature = temperature_values[0]
+            last_temperature = temperature_values[-1]
 
-            if last_temp > first_temp:
+            if last_temperature > first_temperature:
                 temperature_trend = "Increasing"
 
-            elif last_temp < first_temp:
+            elif last_temperature < first_temperature:
                 temperature_trend = "Decreasing"
 
-        # AI ADVICE
+        # AI-STYLE ADVICE
+
         ai_advice = (
-            f"Analysis of {len(records)} years of climate data for "
-            f"{district} indicates {rainfall_category.lower()} and "
-            f"{temperature_category.lower()}. Drought risk is "
-            f"{drought_risk.lower()} while heat risk is "
+            f"{district} shows {rainfall_category.lower()} and "
+            f"{temperature_category.lower()} conditions. "
+            f"Drought risk is {drought_risk.lower()} and heat risk is "
             f"{heat_risk.lower()}. Recommended crops include "
             f"{', '.join(crops)}. Farmers should focus on "
-            f"{', '.join(practices[:3])} to improve resilience."
+            f"{', '.join(practices[:3])} to improve resilience and "
+            f"sustainable production."
         )
 
         return jsonify({
