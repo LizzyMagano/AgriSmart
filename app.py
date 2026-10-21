@@ -1,13 +1,10 @@
-
-from flask import Flask, render_template, request
+from flask import Flask, request, send_file
 import requests
 from datetime import date
 
 app = Flask(__name__)
 
-# Initial representative location for Kgalagadi.
-# These coordinates represent Tsabong, not every farm
-# across the whole district.
+# Initial representative location for Kgalagadi
 DISTRICTS = {
     "Kgalagadi": {
         "latitude": -26.02,
@@ -19,7 +16,7 @@ DISTRICTS = {
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return send_file("index.html")
 
 
 @app.route("/analyse", methods=["POST"])
@@ -29,25 +26,16 @@ def analyse():
     end = request.form.get("end", "")
 
     if district not in DISTRICTS:
-        return render_template(
-            "index.html",
-            error="Please select a supported district."
-        )
+        return {"error": "Please select a supported district."}, 400
 
     try:
         start_date = date.fromisoformat(start)
         end_date = date.fromisoformat(end)
     except ValueError:
-        return render_template(
-            "index.html",
-            error="Please enter valid dates."
-        )
+        return {"error": "Please enter valid dates."}, 400
 
     if start_date >= end_date or end_date >= date.today():
-        return render_template(
-            "index.html",
-            error="Choose a valid historical date range."
-        )
+        return {"error": "Choose a valid historical date range."}, 400
 
     place = DISTRICTS[district]
 
@@ -66,45 +54,35 @@ def analyse():
             params=params,
             timeout=30
         )
+
         response.raise_for_status()
 
         daily = response.json().get("daily", {})
 
-        temperatures = daily.get("temperature_2m_mean") or []
-        rainfall = daily.get("precipitation_sum") or []
+        temperatures = daily.get("temperature_2m_mean", [])
+        rainfall = daily.get("precipitation_sum", [])
 
-        temperatures = [
-            value for value in temperatures
-            if value is not None
-        ]
-        rainfall = [
-            value for value in rainfall
-            if value is not None
-        ]
+        temperatures = [t for t in temperatures if t is not None]
+        rainfall = [r for r in rainfall if r is not None]
 
         if not temperatures or not rainfall:
-            raise ValueError("No climate data was returned.")
+            raise ValueError("No climate data returned")
 
-        average_temp = sum(temperatures) / len(temperatures)
-        total_rainfall = sum(rainfall)
+        average_temp = round(sum(temperatures) / len(temperatures), 1)
+        total_rainfall = round(sum(rainfall), 1)
 
-        # These are climate statistics, not a crop prediction yet.
-        return render_template(
-            "index.html",
-            district=district,
-            location=place["location"],
-            start=start,
-            end=end,
-            average_temp=round(average_temp, 1),
-            total_rainfall=round(total_rainfall, 1)
-        )
+        return {
+            "district": district,
+            "location": place["location"],
+            "start": start,
+            "end": end,
+            "average_temperature": average_temp,
+            "total_rainfall": total_rainfall
+        }
 
-    except (requests.RequestException, ValueError):
-        return render_template(
-            "index.html",
-            error="Could not retrieve climate data. Please try again."
-        )
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
