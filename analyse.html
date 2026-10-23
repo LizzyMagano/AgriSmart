@@ -60,7 +60,6 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            margin: 5px;
         }
 
         a {
@@ -93,16 +92,9 @@
 
     <form id="farmForm">
 
-        <label>Language:</label>
-
-        <select id="language">
-            <option value="en">English</option>
-            <option value="tn">Setswana</option>
-        </select>
-
-        <br><br>
-
-        <label>District:</label>
+        <label>
+            District:
+        </label>
 
         <select id="district">
             <option>Kgalagadi</option>
@@ -135,57 +127,6 @@
 
 <script>
 
-function translateToSetswana(text) {
-
-    const translations = {
-
-        "High Rainfall": "Pula e Ntsi",
-        "Moderate Rainfall": "Pula e mo Magareng",
-        "Low Rainfall": "Pula e Nnye",
-
-        "High Temperature": "Mocheso o Godimo",
-        "Moderate Temperature": "Mocheso o mo Magareng",
-        "Low Temperature": "Mocheso o kwa Tlase",
-
-        "High Risk": "Kotsi e Kgolwane",
-        "Moderate Risk": "Kotsi e mo Magareng",
-        "Low Risk": "Kotsi e Nnye",
-
-        "Increasing": "E a Oketsega",
-        "Decreasing": "E a Fokotsega",
-        "Stable": "E Tsitsitse",
-
-        "Maize": "Mmidi",
-        "Sorghum": "Mabele",
-        "Millet": "Lebelebele",
-        "Beans": "Dinawa"
-    };
-
-    let translated = text;
-
-    for (const key in translations) {
-        translated = translated.replaceAll(
-            key,
-            translations[key]
-        );
-    }
-
-    return translated;
-}
-
-function speakText(text) {
-
-    window.speechSynthesis.cancel();
-
-    const speech =
-        new SpeechSynthesisUtterance(text);
-
-    speech.lang = "tn-ZA";
-    speech.rate = 0.9;
-
-    window.speechSynthesis.speak(speech);
-}
-
 async function analyseFarm(district) {
 
     const response = await fetch(
@@ -204,17 +145,13 @@ async function analyseFarm(district) {
     return await response.json();
 }
 
-document
-.getElementById("farmForm")
+document.getElementById("farmForm")
 .addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
     const district =
         document.getElementById("district").value;
-
-    const language =
-        document.getElementById("language").value;
 
     const results =
         document.getElementById("results");
@@ -239,132 +176,59 @@ document
             return;
         }
 
-        if (language === "tn") {
-
-            climate.ai_advice =
-                translateToSetswana(climate.ai_advice);
-
-            climate.rainfall_category =
-                translateToSetswana(climate.rainfall_category);
-
-            climate.temperature_category =
-                translateToSetswana(climate.temperature_category);
-
-            climate.drought_risk =
-                translateToSetswana(climate.drought_risk);
-
-            climate.heat_risk =
-                translateToSetswana(climate.heat_risk);
-
-            climate.flood_risk =
-                translateToSetswana(climate.flood_risk);
-
-            climate.rainfall_trend =
-                translateToSetswana(climate.rainfall_trend);
-
-            climate.temperature_trend =
-                translateToSetswana(climate.temperature_trend);
-
-            climate.recommended_crops =
-                climate.recommended_crops.map(
-                    crop => translateToSetswana(crop)
-                );
-
-            climate.recommended_practices =
-                climate.recommended_practices.map(
-                    item => translateToSetswana(item)
-                );
-        }
-
-        const labels = language === "tn"
-            ? {
-                advice: "Kgakololo ya Temo",
-                years: "Dingwaga Tse di Sekasekilweng",
-                rainfall: "Boemo jwa Pula",
-                temperature: "Boemo jwa Mocheso",
-                drought: "Kotsi ya Leuba",
-                heat: "Kotsi ya Mocheso",
-                flood: "Kotsi ya Merwalela",
-                raintrend: "Tsela ya Pula",
-                temptrend: "Tsela ya Mocheso",
-                crops: "Dijalo Tse di Kgothalediwang",
-                practices: "Mekgwa ya Temo e e Kgothalediwang",
-                analyse: "Sekaseka Kgaolo e Nngwe",
-                read: "🔊 Buisa Kgakololo"
-            }
-            : {
-                advice: "AI Farm Advice",
-                years: "Years Analysed",
-                rainfall: "Rainfall Conditions",
-                temperature: "Temperature Conditions",
-                drought: "Drought Risk",
-                heat: "Heat Risk",
-                flood: "Flood Risk",
-                raintrend: "Rainfall Trend",
-                temptrend: "Temperature Trend",
-                crops: "Recommended Crops",
-                practices: "Recommended Farming Practices",
-                analyse: "Analyse Another District",
-                read: "🔊 Read Advice"
-            };
-
         results.innerHTML = `
 
             <h2>${climate.district}</h2>
 
-            <h3>${labels.advice}</h3>
+            <h3>AI Farm Advice</h3>
 
             <p>${climate.ai_advice}</p>
-
-            <button onclick="speakText(\`${climate.ai_advice}\`)">
-                ${labels.read}
-            </button>
 
             <hr>
 
             <p>
-                <strong>${labels.years}:</strong>
+                <strong>Years Analysed:</strong>
                 ${climate.years_analysed}
             </p>
 
             <p>
-                <strong>${labels.rainfall}:</strong>
+                <strong>Rainfall Conditions:</strong>
                 ${climate.rainfall_category}
             </p>
 
             <p>
-                <strong>${labels.temperature}:</strong>
+                <strong>Temperature Conditions:</strong>
                 ${climate.temperature_category}
             </p>
 
             <p>
-                <strong>${labels.drought}:</strong>
+                <strong>Drought Risk:</strong>
                 ${climate.drought_risk}
             </p>
 
             <p>
-                <strong>${labels.heat}:</strong>
+                <strong>Heat Risk:</strong>
                 ${climate.heat_risk}
             </p>
 
             <p>
-                <strong>${labels.flood}:</strong>
+                <strong>Flood Risk:</strong>
                 ${climate.flood_risk}
             </p>
 
             <p>
-                <strong>${labels.raintrend}:</strong>
+                <strong>Rainfall Trend:</strong>
                 ${climate.rainfall_trend}
             </p>
 
             <p>
-                <strong>${labels.temptrend}:</strong>
+                <strong>Temperature Trend:</strong>
                 ${climate.temperature_trend}
             </p>
 
             <hr>
 
-            <h3>${labels.crops}</h3>
+            <h3>Recommended Crops</h3>
 
             <ul>
                 ${climate.recommended_crops
@@ -372,7 +236,7 @@ document
                     .join("")}
             </ul>
 
-            <h3>${labels.practices}</h3>
+            <h3>Recommended Farming Practices</h3>
 
             <ul>
                 ${climate.recommended_practices
@@ -383,21 +247,20 @@ document
             <br>
 
             <button onclick="location.reload()">
-                ${labels.analyse}
+                Analyse Another District
             </button>
+
         `;
 
-    }
-    catch(error) {
+    } catch (error) {
 
         console.error(error);
 
         results.innerHTML = `
             <h2>Connection Error</h2>
-            <p>Could not connect to AgriSmart services.</p>
+            <p>Could not connect to AgriSmart analysis services.</p>
         `;
     }
-
 });
 
 </script>
