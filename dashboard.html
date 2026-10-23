@@ -11,57 +11,148 @@
     header,section,footer { background:rgba(0,0,0,0.5); margin:20px; padding:15px; border-radius:10px; }
     h1,h2 { color:#ffd700; }
     img { width:80%; max-width:800px; margin:20px auto; display:block; border-radius:10px; }
-    p { margin:15px auto; width:80%; text-align:justify; }
+    p { margin:15px auto; width:80%; text-align:justify; line-height: 1.6; }
     a { color:#00ffcc; text-decoration:none; margin:0 10px; }
+    .insight { color: #00ffcc; font-weight: bold; }
+    ul { text-align: left; width: 80%; margin: auto; line-height: 1.6; }
+    li { margin-bottom: 10px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Agricultural Dashboards</h1>
+    <h1 id="mainTitle">Agricultural Dashboards</h1>
+    <p id="subTitle" style="text-align: center;">Understanding Botswana's Climate, Soil, and Crop Production</p>
   </header>
 
   <section>
-    <h2>Rainfall Analysis</h2>
-    <img src="rain.jpg" alt="Dashboard">
-    <p>This map shows the average rainfall across the country, dropping from 650mm in the north to under 250mm in the southwest. It visually explains why the north can grow maize, while the dry south and west must rely on tough crops like sorghum and millet.</p>
+    <h2 id="db1Title">1. Mean Annual Rainfall Distribution Map</h2>
+    <img src="rain.jpg" alt="Rainfall Map">
+    <p id="db1Text1"><strong>What it is:</strong> A contour map showing the average annual rainfall across Botswana in millimeters.</p>
+    <p id="db1Text2"><span class="insight">The Insight:</span> Rainfall drops drastically from 650mm in the far north to under 250mm in the southwest. It visually explains regional crop choices: the wetter north can grow water-intensive maize, while the dry south and west must rely on tough crops like sorghum and millet.</p>
 
-    <h2>Temperature Trends</h2>
-    <img src="table.jpg" alt="Dashboard">
-    <p>This table directly links rainfall to food production. In 1980/81, there was good rain (603mm) and high production (48,400 tons). In 1982/83, rainfall dropped to 308mm, and production crashed by 80% to 8,500 tons. It shows exactly how vulnerable crops are to low rain.</p>
+    <h2 id="db2Title">2. Historical Rainfall vs. Crop Production Table</h2>
+    <img src="table.jpg" alt="Production Table">
+    <p id="db2Text1"><strong>What it is:</strong> A historical data table linking specific farming seasons to total rainfall and crop production (in tons).</p>
+    <p id="db2Text2"><span class="insight">The Insight:</span> It directly proves how vulnerable farming is to rainfall. In 1980/81, good rains (603mm) yielded 48,400 tons of crops. In 1982/83, rainfall dropped to 308mm, and production crashed by 80% to just 8,500 tons.</p>
 
-    <h2>Crop Yield</h2>
-    <img src="table 2.jpg" alt="Dashboard">
-    <p>This map shows the severity of drought on crop growth across the country. The table next to it shows how much money the government had to spend on drought relief. It proves that bad rainfall is not just a farming problem, but a national economic crisis.</p>
+    <h2 id="db3Title">3. Drought Severity & Economic Impact Map</h2>
+    <img src="table 2.jpg" alt="Drought Map">
+    <p id="db3Text1"><strong>What it is:</strong> A map grading the severity of drought on crop growth, paired with a table showing government expenditure on drought relief.</p>
+    <p id="db3Text2"><span class="insight">The Insight:</span> It proves that bad rainfall is not just a farming problem, but a national economic crisis. The map shows areas with "almost no crop," while the table shows millions of Pula spent on relief as droughts persist.</p>
 
-    <h2>Rainfall vs Production</h2>
-    <img src="season.jpg" alt="Dashboard">
-    <p>This bar chart shows how farmers react to unpredictable weather. Instead of just accepting a late harvest, farmers actively "change on crop" (the highest bar). This means they switch to faster-growing or more drought-resistant crops when the rains are delayed.</p>
+    <h2 id="db4Title">4. Farmer Adaptation to Climate Variability</h2>
+    <img src="season.jpg" alt="Adaptation Chart">
+    <p id="db4Text1"><strong>What it is:</strong> A bar chart showing the different ways climate variability impacts farmers' decisions.</p>
+    <p id="db4Text2"><span class="insight">The Insight:</span> The tallest bar is "change on crop." It shows that successful farmers adapt. Instead of just accepting a late harvest, they actively switch to faster-growing or drought-resistant crops when the rains are delayed.</p>
 
-    <h2>Soil & Water Management</h2>
-    <img src="multi.jpg" alt="Dashboard">
-    <p>These graphs show decades of rainfall data.
-      They prove that Botswana has a very short rainy season (mostly January and February) and that the total amount of rain changes drastically every year, causing cycles of floods and droughts.</p>
+    <h2 id="db5Title">5. Long-Term Rainfall Time Series & Distribution</h2>
+    <img src="multi.jpg" alt="Rainfall Time Series">
+    <p id="db5Text1"><strong>What it is:</strong> Six charts analyzing decades of rainfall data, including monthly and annual averages, histograms, and box plots.</p>
+    <p id="db5Text2"><span class="insight">The Insight:</span> These graphs prove that Botswana has a very short rainy season (mostly January and February). They also show that total annual rainfall fluctuates drastically, causing unpredictable cycles of floods and droughts.</p>
 
-      <h2>Rainfall vs Production</h2>
-    <img src="map.jpg" alt="Dashboard">
-    <p>This map shows that Botswana has very different soil types depending on the region. 
-      The west is mostly sandy soil that loses water quickly, while the north has clay soil that holds water well. This is why most large-scale farming happens in the north and east.</p>
+    <h2 id="db6Title">6. Botswana Soil Types Spatial Distribution Map</h2>
+    <img src="map.jpg" alt="Soil Map">
+    <p id="db6Text1"><strong>What it is:</strong> A detailed geographic map categorizing the different soil units found across Botswana's districts.</p>
+    <p id="db6Text2"><span class="insight">The Insight:</span> It shows that the west is mostly sandy soil (which loses water and nutrients quickly), while the north has clay-heavy soil (which holds water well). This explains why most large-scale commercial farming is concentrated in the north and east.</p>
 
-      <h2>Rainfall vs Production</h2>
-    <img src="four.jpg" alt="Dashboard">
-    <p>This is a modern, digital dashboard for a single farm. It tracks daily metrics like water usage, power, fertilizer, and crop yields. 
-      It shows how commercial farmers use technology to manage their resources efficiently, rather than just relying on the weather.</p>
+    <h2 id="db7Title">7. Smart Farm Resource Monitoring Dashboard</h2>
+    <img src="four.jpg" alt="Smart Farm Dashboard">
+    <p id="db7Text1"><strong>What it is:</strong> A modern digital dashboard tracking daily farm metrics like water usage, power, fertilizer application, and crop yields.</p>
+    <p id="db7Text2"><span class="insight">The Insight:</span> It demonstrates precision agriculture. It shows how commercial farmers use technology to manage resources efficiently and monitor exactly how much rainfall they receive, rather than just relying blindly on the weather.</p>
 
-      <h2>Rainfall vs Production</h2>
-    <img src="station.jpg" alt="Dashboard">
-    <p>This table shows that rainfall in Botswana is highly unpredictable. 
-      Areas like Tsabong receive very little rain (53.6mm) and it varies wildly from year to year. 
-      This explains why farmers in these regions cannot rely on normal crops and must use drought-resistant seeds.</p>
+    <h2 id="db8Title">8. Station-Level Rainfall Variability Table</h2>
+    <img src="station.jpg" alt="Station Statistics">
+    <p id="db8Text1"><strong>What it is:</strong> A statistical table showing rainfall metrics (Mean, Max, Standard Deviation, Coefficient of Variation) for various towns.</p>
+    <p id="db8Text2"><span class="insight">The Insight:</span> It proves that rainfall is highly unpredictable. For example, Tsabong receives very little rain (53.6mm) and it varies wildly (high Cv index) from year to year. This explains why farmers there cannot rely on normal crops and must use drought-resistant seeds.</p>
+    
+    <hr>
+
+    <h2 id="whyTitle">Why is it important to know rainfall and temperature before planting?</h2>
+    <p id="whyIntro">
+      In a semi-arid country like Botswana, planting without checking climate data is a gamble. Here is why these dashboards are critical:
+    </p>
+    <ul id="whyList">
+      <li><strong>Seed Germination:</strong> Seeds need specific soil moisture and temperature to germinate. Planting too early before the rains means seeds will dry out and die. Planting too late means crops won't mature before the winter frost.</li>
+      <li><strong>Choosing the Right Crop:</strong> Temperature and rainfall dictate what will survive. Knowing a region gets under 400mm of rain tells a farmer to plant sorghum or millet instead of maize, preventing total crop failure.</li>
+      <li><strong>Pest and Disease Control:</strong> High temperatures and specific humidity levels trigger outbreaks of pests (like armyworms) and fungal diseases. Knowing the forecast helps farmers prepare and spray on time.</li>
+      <li><strong>Financial Planning:</strong> If the forecast shows a high probability of drought (low rainfall), a farmer can choose to plant a smaller area, saving money on seeds, fertilizer, and labor, avoiding massive debt.</li>
+    </ul>
+    
+    <p id="whyConclusion">
+      <strong>The Importance of these Dashboards:</strong> These dashboards transform raw weather data into actionable intelligence. They allow farmers to shift from reactive farming (panicking when a drought hits) to proactive farming (planning crops and resources based on historical and real-time climate trends), ensuring food security and financial stability.
+    </p>
+
   </section>
 
   <footer>
-    <a href="index.html">Home</a> | <a href="knowledge.html">Knowledge Guide</a>
+    <a href="index.html" id="homeLink">Home</a> | 
+    <a href="knowledge.html" id="knowledgeLink">Knowledge Guide</a>
   </footer>
+
+  <script>
+    const lang = localStorage.getItem("language") || "en";
+
+    if (lang === "tn") {
+      document.getElementById("mainTitle").textContent = "Diboto tsa Temo";
+      document.getElementById("subTitle").textContent = "Go tlhaloganya Tlelaemete, Mmu le Tlhabiso ya Dijalo mo Botswana";
+
+      // Dashboard 1
+      document.getElementById("db1Title").textContent = "1. Mmapa wa Kabo ya Pula ka Ngwaga";
+      document.getElementById("db1Text1").innerHTML = "<strong>Ke eng:</strong> Mmapa o o bontshang palogare ya pula mo Botswana ka dimilimithara.";
+      document.getElementById("db1Text2").innerHTML = "<span class='insight'>Temogo:</span> Pula e fokotsega thata go tswa go 650mm kwa bokone jwa naga go ya kwa tlase ga 250mm kwa borwa-bophirima. O tlhalosa gore go tlhophiwa dijalo go ya ka kgaolo: bokone jo bo nang le pula e ntsi bo ka jala mmidi, fa borwa le bophirima jo bo omeletseng bo tshwanetse go jala mabele le lebelebele.";
+
+      // Dashboard 2
+      document.getElementById("db2Title").textContent = "2. Tshwanopele ya Pula le Tlhabiso ya Dijalo";
+      document.getElementById("db2Text1").innerHTML = "<strong>Ke eng:</strong> Tafole ya dipalopalo tsa kgale e e golaganyang sehla sa temo le palogotlhe ya pula le tlhabiso ya dijalo (ka ditone).";
+      document.getElementById("db2Text2").innerHTML = "<span class='insight'>Temogo:</span> E supa sentle gore temo e mo kotsing jang ka ntlha ya pula. Ka 1980/81, pula e e siameng (603mm) e ne ya ntsha ditone di le 48,400 tsa dijalo. Ka 1982/83, pula e ne ya fokotsega go 308mm, mme tlhabiso ya dijalo ya fokotsega ka 80% go ya go ditone di le 8,500 fela.";
+
+      // Dashboard 3
+      document.getElementById("db3Title").textContent = "3. Mmapa wa Bogale jwa Leuba le Ditlamorago tsa Ikonomi";
+      document.getElementById("db3Text1").innerHTML = "<strong>Ke eng:</strong> Mmapa o o lekanyetsang bogale jwa leuba mo kgolong ya dijalo, mmogo le tafole e e bontshang madi a puso a a dirisitsweng go thusa ka leuba.";
+      document.getElementById("db3Text2").innerHTML = "<span class='insight'>Temogo:</span> E supa gore pula e e sa siamang ga se bothata jwa temo fela, mme ke bothata jwa ikonomi ya naga yotlhe. Mmapa o bontsha mafelo a a nang le 'dijalo tse di se nang sepe', fa tafole e bontsha dimilione tsa Pula tse di dirisitsweng go thusa fa leuba le tswelela.";
+
+      // Dashboard 4
+      document.getElementById("db4Title").textContent = "4. Go Itharabisa ga Balemi go Tlelaemete e e Fetogang";
+      document.getElementById("db4Text1").innerHTML = "<strong>Ke eng:</strong> Tshate e e bontshang ditsela tse di farologaneng tse go fetoga ga tlelaemete go amang ditshwetso tsa balemi ka tsone.";
+      document.getElementById("db4Text2").innerHTML = "<span class='insight'>Temogo:</span> Kholomo e e telele ke 'go fetola dijalo'. E bontsha gore balemi ba ba atlegileng ba a itharabisa. Go na le go amogela fela thobo e e saletseng morago, ba fetola ka bonako go ya go dijalo tse di golang ka bonako kgotsa tse di emelang leuba fa dipula di senoga.";
+
+      // Dashboard 5
+      document.getElementById("db5Title").textContent = "5. Tshekatsheko ya Nako e Telele ya Pula le Kabo ya Yone";
+      document.getElementById("db5Text1").innerHTML = "<strong>Ke eng:</strong> Ditshate di le thataro tse di sekasekang dipalopalo tsa pula ya dingwaga tse dintsi, go akaretsa palogare ya kgwedi le ngwaga.";
+      document.getElementById("db5Text2").innerHTML = "<span class='insight'>Temogo:</span> Ditshate tse di supa gore Botswana e na le sehla sa dipula se sekhutshwane thata (bogolo jang ka Firikgong le Tlhakole). Di gape di supa gore palogotlhe ya pula ya ngwaga e fetoga thata, e baka dikgogola le leuba tse di sa solofelwang.";
+
+      // Dashboard 6
+      document.getElementById("db6Title").textContent = "6. Mmapa wa Mefuta ya Mmu mo Botswana";
+      document.getElementById("db6Text1").innerHTML = "<strong>Ke eng:</strong> Mmapa o o tlhamaletseng wa dikgaolo o o kgaolang mefuta ya mmu e e fitlhelwang mo dikgaolong tsa Botswana.";
+      document.getElementById("db6Text2").innerHTML = "<span class='insight'>Temogo:</span> O bontsha gore bophirima ke mmu wa santlha (o o latlhegelang metsi le dikotla ka bonako), fa bokone bo na le mmu wa letsopa (o o tsholang metsi sentle). Seno se tlhalosa gore goreng temo e kgolo e le kwa bokone le botlhaba.";
+
+      // Dashboard 7
+      document.getElementById("db7Title").textContent = "7. Boto ya go Lekola Dithoto tsa Polasi";
+      document.getElementById("db7Text1").innerHTML = "<strong>Ke eng:</strong> Boto ya sejwalejwale ya dijithale e e latelang dipalopalo tsa letsatsi le letsatsi tsa polasi jaaka tiriso ya metsi, motlakase, manyoro le tlhabiso ya dijalo.";
+      document.getElementById("db7Text2").innerHTML = "<span class='insight'>Temogo:</span> E bontsha temo ya maemo a a kwa godimo (precision agriculture). E supa kafa balemi ba kgwebo ba dirisang thekinoloji go laola dithoto ka tsela e e nonofileng le go lekola palo ya pula e ba e amogelang, go na le go ikaega fela ka maemo a bosa.";
+
+      // Dashboard 8
+      document.getElementById("db8Title").textContent = "8. Tafole ya Pula e e Farologaneng ka Dikgaolo";
+      document.getElementById("db8Text1").innerHTML = "<strong>Ke eng:</strong> Tafole ya dipalopalo e e bontshang dipalopalo tsa pula (Palogare, Kwa godimo, Pharologano, le go fetoga) kwa ditoropong tse di farologaneng.";
+      document.getElementById("db8Text2").innerHTML = "<span class='insight'>Temogo:</span> E supa gore pula ga e solofelwe. Sekao, Tsabong e amogela pula e nnye thata (53.6mm) mme e fetoga thata ngwaga le ngwaga. Seno se tlhalosa gore goreng balemi ba koo ba sa kgone go ikaega ka dijalo tse di tlwaelegileng mme ba tshwanetse go dirisa peo e e emelang leuba.";
+
+      // Why section
+      document.getElementById("whyTitle").textContent = "Goreng go le botlhokwa go itse pula le mogote pele o jala?";
+      document.getElementById("whyIntro").textContent = "Mo nageng e e omeletseng jaaka Botswana, go jala o sa sekaseka dipalopalo tsa bosa ke go tshameka ka maduo. Seno ke lebaka la goreng diboto tse di le botlhokwa:";
+      document.getElementById("whyList").innerHTML = `
+        <li><strong>Go Tlhabalala ga Peo:</strong> Peo e tlhoka metsi le mogote o o rileng go tlhabalala. Go jala pele ga dipula go raya gore peo e tla omelela mme e swe. Go jala morago thata go raya gore dijalo di ka se gole pele ga serame sa mariga.</li>
+        <li><strong>Go Tlhopha Dijalo tse di Siametseng:</strong> Mogote le pula di laola gore ke dijalo dife tse di tla tshelang. Go itse gore kgaolo e amogela kwa tlase ga 400mm ya pula go raya gore molemi a jale mabele kgotsa lebelebele go na le mmidi, go thibela go latlhegelwa ke dijalo tsotlhe.</li>
+        <li><strong>Taolo ya Dikokonyane le Malwetse:</strong> Mogote o o kwa godimo le mongame o baka go tlhaselwa ke dikokonyane (jaaka armyworms) le malwetse a fungal. Go itse maemo a bosa go thusa balemi go ipaakanyetsa le go fesa ka nako.</li>
+        <li><strong>Thulaganyo ya Madi:</strong> Fa ponelopele e supa kotsi e kgolo ya leuba (pula e nnye), molemi a ka tlhopha go jala tshimo e nnye, go boloka madi a peo, manyoro le badiri, go thibela sekoloto se segolo.</li>
+      `;
+      document.getElementById("whyConclusion").innerHTML = "<strong>Botlhokwa jwa Diboto tse:</strong> Diboto tse di fetola dipalopalo tsa bosa go nna kitso e e dirisegang. Di thusa balemi go tswa mo temong ya go itebaganya le mathata (go tshoga fa leuba le tlhasela) go ya go temo ya go ipaakanyetsa (go rulaganya dijalo le dithoto go ya ka tlelaemete ya kgale le ya sejwalejwale), go netefatsa tshireletso ya dijo le go tlhomama ga madi.";
+
+      // Footer links
+      document.getElementById("homeLink").textContent = "Gae";
+      document.getElementById("knowledgeLink").textContent = "Kaelo ya Kitso";
+    }
+  </script>
 </body>
 </html>
+
 
