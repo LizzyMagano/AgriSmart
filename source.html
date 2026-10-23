@@ -57,6 +57,7 @@
       background: #00cca3;
     }
 
+    /* Navigation styling */
     nav {
       display: flex;
       flex-direction: column;
@@ -83,7 +84,7 @@
       border: 1px solid #ffd700;
     }
 
-    /* New styles for the Video section */
+    /* Video Section */
     .video-section {
       background: rgba(0, 0, 0, 0.6);
       margin: 20px;
@@ -96,15 +97,14 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      margin-top: 20px;
     }
 
     .video-card {
       background: rgba(0, 0, 0, 0.8);
-      padding: 15px;
+      padding: 10px;
       border-radius: 10px;
       width: 100%;
-      max-width: 560px; /* Fits standard YouTube embed */
+      max-width: 560px;
     }
 
     iframe {
@@ -114,20 +114,28 @@
       border: none;
     }
 
-    .ext-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: #ffd700;
-      text-decoration: underline;
-      font-weight: bold;
+    /* Footer / Home Button Styling */
+    footer {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
     }
 
-    footer {
-      background: rgba(0, 0, 0, 0.5);
-      margin: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      font-size: 14px;
+    .home-btn {
+      background: #ffd700;
+      color: #000;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background 0.3s;
+      display: inline-block;
+    }
+
+    .home-btn:hover {
+      background: #e6c200;
     }
   </style>
 </head>
@@ -139,84 +147,68 @@
     <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Setswana</button>
   </header>
 
+  <!-- Navigation to other pages -->
   <nav>
-    <!-- Internal site navigation (No external links here) -->
+    <a href="climate-crops-soil.html" id="link1">Climate • Crops • Soil</a>
     <a href="calendar.html" id="link2">Farming Calendar</a>
     <a href="analyse.html" id="link3">Analyse My Farm</a>
-    <a href="knowledge.html" id="link4">Farming Knowledge</a>
-    <a href="dashboard.html" id="link5">Agricultural Dashboards</a>
+    <a href="decision.html" id="link4">Farming Decision Guide</a>
+    <a href="dashboards.html" id="link5">Agricultural Dashboards</a>
+    <a href="myfarm.html" id="link6">My Farm</a>
+    <a href="about.html" id="link7">Research & Data Sources</a>
   </nav>
 
-  <!-- Videos and External Links -->
+  <!-- Video Section (Videos Only) -->
   <div class="video-section">
-    <h2 id="videoTitle">Educational Videos & Research Links</h2>
-    
     <div class="video-grid">
       
-      <!-- Video 1: YouTube Embed -->
+      <!-- Video 1 -->
       <div class="video-card">
         <iframe src="https://www.youtube.com/embed/Xxzvj2f7mkU" allowfullscreen></iframe>
-        <p id="vid1Text">What is Sustainable Agriculture? And How We Practice It?</p>
       </div>
 
-      <!-- Video 2: YouTube Embed -->
+      <!-- Video 2 -->
       <div class="video-card">
         <iframe src="https://www.youtube.com/embed/_7fbLCybTwk" allowfullscreen></iframe>
-        <p id="vid2Text">Climate Change & Farming Practices</p>
-      </div>
-
-      <!-- Link 3: Al Jazeera Video (Cannot be embedded easily, so it's a link) -->
-      <div class="video-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <p id="vid3Text" style="font-size: 18px;">Botswana's farmers fighting for survival in the Okavango Delta</p>
-        <a href="https://www.aljazeera.com/video/risking-it-all/2022/2/5/botswanas-farmers-fighting-for-survival-in-okavango-delta" target="_blank" class="ext-link">Watch on Al Jazeera</a>
-      </div>
-
-      <!-- Link 4: PDF Research Paper -->
-      <div class="video-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <p id="vid4Text" style="font-size: 18px;">Research Paper: Effects of Rainfall on Crop Production</p>
-        <a href="https://core.ac.uk/download/234648067.pdf" target="_blank" class="ext-link">Read the PDF</a>
-      </div>
-
-      <!-- Link 5: LinkedIn Post (African Union) -->
-      <div class="video-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <p id="vid5Text" style="font-size: 18px;">African Union Media Fellowship: Soil & Climate</p>
-        <a href="https://www.linkedin.com/posts/african-union-commission-addis-ababa_aumediafellowship-aumf-activity-7423685305213472768-G5uo" target="_blank" class="ext-link">View on LinkedIn</a>
       </div>
 
     </div>
   </div>
 
+  <!-- Footer with Home Button -->
   <footer>
-    <p>&copy; 2024 AgriSmart Botswana. All rights reserved.</p>
+    <a href="index.html" class="home-btn" id="homeBtn">Home</a>
   </footer>
 
   <script>
-    // Check saved language preference
     let lang = localStorage.getItem("language") || "en";
 
-    // Notice how the translations ONLY contain text now, no URLs.
     const translations = {
       en: {
         title: "AgriSmart Botswana",
         subtitle: "Data-Driven Decision Support for Sustainable Crop & Water Management",
         btnText: "Setswana",
-        videoTitle: "Educational Videos & Research Links",
-        vid1Text: "What is Sustainable Agriculture? And How We Practice It?",
-        vid2Text: "Climate Change & Farming Practices",
-        vid3Text: "Botswana's farmers fighting for survival in the Okavango Delta",
-        vid4Text: "Research Paper: Effects of Rainfall on Crop Production",
-        vid5Text: "African Union Media Fellowship: Soil & Climate"
+        link1: "Climate • Crops • Soil",
+        link2: "Farming Calendar",
+        link3: "Analyse My Farm",
+        link4: "Farming Decision Guide",
+        link5: "Agricultural Dashboards",
+        link6: "My Farm",
+        link7: "Research & Data Sources",
+        homeBtn: "Home"
       },
       tn: {
         title: "AgriSmart Botswana",
         subtitle: "Tshegetso ya Ditshwetso ka Datha go ya ka Temo le Metsi",
         btnText: "English",
-        videoTitle: "Dibidio tsa Thuto le Metswedi ya Dipatlisiso",
-        vid1Text: "Temo e e Tswelelang ke eng?",
-        vid2Text: "Go Fetoga ga Tlelaemete le Mekgwa ya Temo",
-        vid3Text: "Balemi ba Botswana ba lwela go tshela mo Okavango Delta",
-        vid4Text: "Patlisiso: Ditlamorago tsa Pula mo Tlhabisong ya Dijalo",
-        vid5Text: "African Union: Mmu le Tlelaemete"
+        link1: "Tlelaemete • Dijalo • Mmu",
+        link2: "Khalendara ya Temo",
+        link3: "Sekaseka Polasi Ya Me",
+        link4: "Kaelo ya Ditshwetso tsa Temo",
+        link5: "Diboto tsa Temo",
+        link6: "Polasi Ya Me",
+        link7: "Dipatlisiso le Metswedi ya Datha",
+        homeBtn: "Gae"
       }
     };
 
@@ -235,13 +227,7 @@
       document.getElementById("link6").textContent = t.link6;
       document.getElementById("link7").textContent = t.link7;
       
-      // Update Video section text
-      document.getElementById("videoTitle").textContent = t.videoTitle;
-      document.getElementById("vid1Text").textContent = t.vid1Text;
-      document.getElementById("vid2Text").textContent = t.vid2Text;
-      document.getElementById("vid3Text").textContent = t.vid3Text;
-      document.getElementById("vid4Text").textContent = t.vid4Text;
-      document.getElementById("vid5Text").textContent = t.vid5Text;
+      document.getElementById("homeBtn").textContent = t.homeBtn;
     }
 
     function toggleLanguage() {
