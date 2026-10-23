@@ -1,0 +1,97 @@
+id,district,year,rainfall_mm,avg_temperature_c
+1,Kgalagadi,2019,280,32
+2,Kgalagadi,2020,310,31
+3,Kgalagadi,2021,350,30
+4,Kgalagadi,2022,270,33
+5,Kgalagadi,2023,320,31
+6,Kgalagadi,2024,360,30
+7,Kgalagadi,2025,300,32
+8,Kgalagadi,2026,340,31
+9,Chobe,2019,650,28
+10,Chobe,2020,670,27
+11,Chobe,2021,720,27
+12,Chobe,2022,640,28
+13,Chobe,2023,680,27
+14,Chobe,2024,730,26
+15,Chobe,2025,690,27
+16,Chobe,2026,710,27
+17,Central,2019,450,30
+18,Central,2020,480,29
+19,Central,2021,520,29
+20,Central,2022,460,30
+21,Central,2023,490,29
+22,Central,2024,530,28
+23,Central,2025,470,29
+24,Central,2026,510,29
+25,Ghanzi,2019,300,31
+26,Ghanzi,2020,330,30
+27,Ghanzi,2021,370,29
+28,Ghanzi,2022,290,32
+29,Ghanzi,2023,340,30
+30,Ghanzi,2024,380,29
+31,Ghanzi,2025,320,31
+32,Ghanzi,2026,360,30
+33,North West,2019,600,27
+34,North West,2020,620,27
+35,North West,2021,670,26
+36,North West,2022,590,27
+37,North West,2023,630,26
+38,North West,2024,680,26
+39,North West,2025,640,27
+40,North West,2026,660,26
+41,Kgatleng,2019,440,30
+42,Kgatleng,2020,470,29
+43,Kgatleng,2021,510,29
+44,Kgatleng,2022,430,30
+45,Kgatleng,2023,480,29
+46,Kgatleng,2024,520,28
+47,Kgatleng,2025,460,29
+48,Kgatleng,2026,500,29
+49,Kweneng,2019,430,30
+50,Kweneng,2020,460,29
+51,Kweneng,2021,500,29
+52,Kweneng,2022,420,30
+53,Kweneng,2023,470,29
+54,Kweneng,2024,510,28
+55,Kweneng,2025,450,29
+56,Kweneng,2026,490,29
+57,Southern,2019,420,30
+58,Southern,2020,450,29
+59,Southern,2021,490,29
+60,Southern,2022,410,30
+61,Southern,2023,460,29
+62,Southern,2024,500,28
+63,Southern,2025,440,29
+64,Southern,2026,480,29
+65,North West,2019,600,27
+66,North West,2020,620,27
+67,North West,2021,670,26
+68,North West,2022,590,27
+69,North West,2023,630,26
+70,North West,2024,680,26
+71,North West,2025,640,27
+72,North West,2026,660,26
+73,Northern,2019,520,28
+74,Northern,2020,550,28
+75,Northern,2021,590,27
+76,Northern,2022,510,28
+77,Northern,2023,560,27
+78,Northern,2024,600,27
+79,Northern,2025,540,28
+80,Northern,2026,580,27
+81,North East,2019,500,29
+82,North East,2020,530,28
+83,North East,2021,570,28
+84,North East,2022,490,29
+85,North East,2023,540,28
+86,North East,2024,580,27
+87,North East,2025,520,28
+88,North East,2026,560,28
+89,South East,2019,410,30
+90,South East,2020,440,29
+91,South East,2021,480,29
+92,South East,2022,400,30
+93,South East,2023,450,29
+94,South East,2024,490,28
+95,South East,2025,430,29
+96,South East,2026,470,29
