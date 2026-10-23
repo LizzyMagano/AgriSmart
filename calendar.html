@@ -132,7 +132,6 @@
 
 <section>
 
-    <h2 id="recordTitle">Record Your Planting</h2>
 
     <form id="calendarForm">
 
@@ -151,21 +150,6 @@
             </select>
 
         </label>
-
-        <label id="daysLabel">
-            Days Taken to Plant:
-
-            <input
-                type="number"
-                id="plantDays"
-                min="1"
-                max="60">
-        </label>
-
-        <input
-            type="submit"
-            id="saveBtn"
-            value="Save Record">
 
     </form>
 
@@ -200,7 +184,7 @@ if (lang === "tn") {
         "<th>Kgwedi</th><th>Tiro</th>";
 
     rows[1].innerHTML =
-        "<td>Lwetse</td><td>Tokiso ya masimo e simologa</td>";
+        "<td>Lwetse</td><td>Baakanya tshimo ya gago/ Tokiso ya masimo ya simologa</td>";
 
     rows[2].innerHTML =
         "<td>Diphalane</td><td>Go jala fa dipula tsa ntlha di simologa</td>";
@@ -272,29 +256,14 @@ document.getElementById("calendarForm")
     if (lang === "tn") {
 
         document.getElementById("results").innerHTML = `
-            <h2>🌱 Rekoto ya Temo</h2>
-
-            <p>
-                O jadile ka <b>${month}</b>
-                mme go go tsere
-                <b>${days} malatsi</b>.
-            </p>
-
-            <p>
+           
+ <p>
                 Tswelela go lekola pula le kgolo ya dijalo
                 gore o bone tsotlhe di tsamaya sentle.
             </p>
         `;
     }
     else {
-
-        document.getElementById("results").innerHTML = `
-            <h2> Planting Record</h2>
-
-            <p>
-                You planted in <b>${month}</b>
-                and it took <b>${days} days</b>.
-            </p>
 
             <p>
                 Keep monitoring rainfall and crop growth
