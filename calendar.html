@@ -1,86 +1,312 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana Farming Calendar</title>
-  <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif; color: #fff; text-align: center;
-      background-image: url('background.jpg'); background-size: cover;
-      background-position: center; background-attachment: fixed;
-    }
-    body::before { content:""; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.4); z-index:-1; }
-    header, section, footer { background:rgba(0,0,0,0.5); margin:20px; padding:15px; border-radius:10px; }
-    h1,h2 { color:#ffd700; }
-    table { margin:auto; border-collapse:collapse; width:90%; }
-    th,td { border:1px solid #fff; padding:10px; }
-    a { color:#00ffcc; text-decoration:none; margin:0 10px; }
-    label { display:block; margin:10px 0; }
-    input,select { padding:5px; margin:5px; }
-  </style>
+    <title>AgriSmart Botswana Farming Calendar</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: -1;
+        }
+
+        header,
+        section,
+        footer {
+            background: rgba(0,0,0,0.5);
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        h1, h2 {
+            color: #ffd700;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+        }
+
+        a {
+            color: #00ffcc;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input,
+        select {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <h1> Botswana Farming Calendar</h1>
-  </header>
 
-  <!-- Seasonal Calendar -->
-  <section>
-    <h2>Seasonal Activities</h2>
-    <table>
-      <tr><th>Month</th><th>Activity</th></tr>
-      <tr><td>September</td><td>Land preparation begins</td></tr>
-      <tr><td>October</td><td>Early planting with first rains</td></tr>
-      <tr><td>November</td><td>Main planting season</td></tr>
-      <tr><td>December</td><td>Crop management (fertilizer, irrigation)</td></tr>
-      <tr><td>January</td><td>Weeding and monitoring</td></tr>
-      <tr><td>February</td><td>Mid-season crop care</td></tr>
-      <tr><td>March</td><td>Harvesting of early crops</td></tr>
-      <tr><td>April</td><td>Main harvest season</td></tr>
+<header>
+    <h1 id="mainTitle">Botswana Farming Calendar</h1>
+</header>
+
+<section>
+
+    <h2 id="seasonTitle">Seasonal Activities</h2>
+
+    <table id="calendarTable">
+
+        <tr>
+            <th>Month</th>
+            <th>Activity</th>
+        </tr>
+
+        <tr>
+            <td>September</td>
+            <td>Land preparation begins</td>
+        </tr>
+
+        <tr>
+            <td>October</td>
+            <td>Early planting with first rains</td>
+        </tr>
+
+        <tr>
+            <td>November</td>
+            <td>Main planting season</td>
+        </tr>
+
+        <tr>
+            <td>December</td>
+            <td>Crop management (fertilizer, irrigation)</td>
+        </tr>
+
+        <tr>
+            <td>January</td>
+            <td>Weeding and monitoring</td>
+        </tr>
+
+        <tr>
+            <td>February</td>
+            <td>Mid-season crop care</td>
+        </tr>
+
+        <tr>
+            <td>March</td>
+            <td>Harvesting of early crops</td>
+        </tr>
+
+        <tr>
+            <td>April</td>
+            <td>Main harvest season</td>
+        </tr>
+
     </table>
-  </section>
 
-  <!-- Farmer Input Form -->
-  <section>
-    <h2> Record Your Planting</h2>
+</section>
+
+<section>
+
+    <h2 id="recordTitle">Record Your Planting</h2>
+
     <form id="calendarForm">
-      <label>Month of Planting:
-        <select id="plantMonth">
-          <option>September</option>
-          <option>October</option>
-          <option>November</option>
-          <option>December</option>
-          <option>January</option>
-          <option>February</option>
-          <option>March</option>
-          <option>April</option>
-        </select>
-      </label>
-      <label>Days Taken to Plant:
-        <input type="number" id="plantDays" min="1" max="60">
-      </label>
-      <input type="submit" value="Save Record">
+
+        <label id="monthLabel">
+            Month of Planting:
+
+            <select id="plantMonth">
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+            </select>
+
+        </label>
+
+        <label id="daysLabel">
+            Days Taken to Plant:
+
+            <input
+                type="number"
+                id="plantDays"
+                min="1"
+                max="60">
+        </label>
+
+        <input
+            type="submit"
+            id="saveBtn"
+            value="Save Record">
+
     </form>
-  </section>
 
-  <!-- Results Section -->
-  <section id="results"></section>
+</section>
 
-  <footer>
-    <a href="index.html">Home</a> | <a href="analyse.html">🔍 Analyse My Farm</a>
-  </footer>
+<section id="results"></section>
 
-  <script>
-    document.getElementById("calendarForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      let month = document.getElementById("plantMonth").value;
-      let days = document.getElementById("plantDays").value;
+<footer>
+    <a href="index.html" id="homeLink">Home</a> |
+    <a href="analyse.html" id="analyseLink">Analyse My Farm</a>
+</footer>
 
-      document.getElementById("results").innerHTML =
-        `<h2>🌱 Planting Record</h2>
-         <p>You planted in <b>${month}</b> and it took <b>${days} days</b>.</p>
-         <p>Keep monitoring rainfall and crop growth for best results.</p>`;
-    });
-  </script>
+<script>
+
+const lang = localStorage.getItem("language") || "en";
+
+if (lang === "tn") {
+
+    document.getElementById("mainTitle").textContent =
+        "Khalendara ya Temo ya Botswana";
+
+    document.getElementById("seasonTitle").textContent =
+        "Ditiro tsa Sehla";
+
+    document.getElementById("recordTitle").textContent =
+        "Rekota Temo ya Gago";
+
+    const rows =
+        document.querySelectorAll("#calendarTable tr");
+
+    rows[0].innerHTML =
+        "<th>Kgwedi</th><th>Tiro</th>";
+
+    rows[1].innerHTML =
+        "<td>Lwetse</td><td>Tokiso ya masimo e simologa</td>";
+
+    rows[2].innerHTML =
+        "<td>Diphalane</td><td>Go jala fa dipula tsa ntlha di simologa</td>";
+
+    rows[3].innerHTML =
+        "<td>Ngwanatsele</td><td>Sehla se segolo sa go jala</td>";
+
+    rows[4].innerHTML =
+        "<td>Ngoatole</td><td>Tlhokomelo ya dijalo, manyoro le nosetso</td>";
+
+    rows[5].innerHTML =
+        "<td>Ferikgong</td><td>Go tlhagola le go lekola dijalo</td>";
+
+    rows[6].innerHTML =
+        "<td>Tlhakole</td><td>Tlhokomelo ya dijalo mo gare ga sehla</td>";
+
+    rows[7].innerHTML =
+        "<td>Mopitlwe</td><td>Go roba dijalo tsa pele</td>";
+
+    rows[8].innerHTML =
+        "<td>Moranang</td><td>Sehla se segolo sa thobo</td>";
+
+    document.getElementById("monthLabel").innerHTML = `
+        Kgwedi ya Temo:
+
+        <select id="plantMonth">
+            <option>Lwetse</option>
+            <option>Diphalane</option>
+            <option>Ngwanatsele</option>
+            <option>Ngoatole</option>
+            <option>Ferikgong</option>
+            <option>Tlhakole</option>
+            <option>Mopitlwe</option>
+            <option>Moranang</option>
+        </select>
+    `;
+
+    document.getElementById("daysLabel").innerHTML = `
+        Malatsi a go Jala:
+
+        <input
+            type="number"
+            id="plantDays"
+            min="1"
+            max="60">
+    `;
+
+    document.getElementById("saveBtn").value =
+        "Boloka Rekoto";
+
+    document.getElementById("homeLink").textContent =
+        "Gae";
+
+    document.getElementById("analyseLink").textContent =
+        "Sekaseka Polasi Ya Me";
+}
+
+document.getElementById("calendarForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let month =
+        document.getElementById("plantMonth").value;
+
+    let days =
+        document.getElementById("plantDays").value;
+
+    if (lang === "tn") {
+
+        document.getElementById("results").innerHTML = `
+            <h2>🌱 Rekoto ya Temo</h2>
+
+            <p>
+                O jadile ka <b>${month}</b>
+                mme go go tsere
+                <b>${days} malatsi</b>.
+            </p>
+
+            <p>
+                Tswelela go lekola pula le kgolo ya dijalo
+                gore o bone tsotlhe di tsamaya sentle.
+            </p>
+        `;
+    }
+    else {
+
+        document.getElementById("results").innerHTML = `
+            <h2> Planting Record</h2>
+
+            <p>
+                You planted in <b>${month}</b>
+                and it took <b>${days} days</b>.
+            </p>
+
+            <p>
+                Keep monitoring rainfall and crop growth
+                for best results.
+            </p>
+        `;
+    }
+
+});
+
+</script>
+
 </body>
 </html>
+
