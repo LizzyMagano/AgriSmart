@@ -22,6 +22,123 @@ DISTRICT_COORDINATES = {
     "Northern": {"lat": -19.98, "lon": 23.42}
 }
 
+# ---------------------------------------------------------------
+# TRANSLATION DICTIONARIES
+# ---------------------------------------------------------------
+
+TRANSLATIONS = {
+
+    "en": {
+        "low_rainfall": "Low Rainfall",
+        "moderate_rainfall": "Moderate Rainfall",
+        "high_rainfall": "High Rainfall",
+
+        "low_temperature": "Low Temperature",
+        "moderate_temperature": "Moderate Temperature",
+        "high_temperature": "High Temperature",
+
+        "high_risk": "High",
+        "moderate_risk": "Moderate",
+        "low_risk": "Low",
+
+        "increasing": "Increasing",
+        "decreasing": "Decreasing",
+        "stable": "Stable",
+
+        "advice_template": (
+            "{district} shows {rainfall_category} and "
+            "{temperature_category} conditions. "
+            "Drought risk is {drought_risk} and heat risk is "
+            "{heat_risk}. Recommended crops include "
+            "{crops}. Farmers should focus on "
+            "{practices} to improve resilience and "
+            "sustainable production."
+        ),
+
+        "crops": {
+            "low": ["Sorghum", "Millet", "Cowpea", "Groundnut"],
+            "moderate": ["Maize", "Sunflower", "Groundnuts", "Watermelon"],
+            "high": ["Rice", "Cassava", "Vegetables", "Wet-Tolerant Maize"]
+        },
+
+        "practices": {
+            "low": [
+                "Apply mulching",
+                "Harvest rainwater",
+                "Use drip irrigation",
+                "Plant drought-resistant crops",
+                "Plant immediately after effective rainfall"
+            ],
+            "moderate": [
+                "Use crop rotation",
+                "Monitor rainfall patterns",
+                "Maintain soil moisture",
+                "Diversify crop production"
+            ],
+            "high": [
+                "Improve drainage",
+                "Monitor fungal diseases",
+                "Diversify crops"
+            ]
+        }
+    },
+
+    "tn": {
+        "low_rainfall": "Pula e Nnye",
+        "moderate_rainfall": "Pula e mo Magareng",
+        "high_rainfall": "Pula e Ntsi",
+
+        "low_temperature": "Mogote o o Kwa Tlase",
+        "moderate_temperature": "Mogote o o mo Magareng",
+        "high_temperature": "Mogote o o Kwa Godimo",
+
+        "high_risk": "Godimo",
+        "moderate_risk": "Magareng",
+        "low_risk": "Tlase",
+
+        "increasing": "E a Oketsega",
+        "decreasing": "E a Fokotsega",
+        "stable": "E Thebile",
+
+        "advice_template": (
+            "{district} e na le {rainfall_category} le "
+            "{temperature_category}. "
+            "Kotsi ya leuba ke {drought_risk} mme kotsi ya mogote ke "
+            "{heat_risk}. Dijalo tse di tshitshintsweng di akaretsa "
+            "{crops}. Balemi ba tshwanetse go tlhoma tlhoko mo "
+            "{practices} go tokafatsa mamello le "
+            "temo e e tswelelang."
+        ),
+
+        "crops": {
+            "low": ["Mabele", "Leblele", "Dinawa", "Matonkomane"],
+            "moderate": ["Mmidi", "Sunflower", "Matonkomane", "Legapu"],
+            "high": ["Raese", "Cassava", "Merogo", "Mmidi o o Emelang Metsi"]
+        },
+
+        "practices": {
+            "low": [
+                "Dirisa mulch",
+                "Kgapela pula",
+                "Dirisa drip irrigation",
+                "Jala dijalo tse di emelang leuba",
+                "Jala ka bonako morago ga pula e e lekaneng"
+            ],
+            "moderate": [
+                "Dirisa go fetola dijalo",
+                "Lekola mokgwa wa pula",
+                "Boloka metsi mo mmung",
+                "Farologanya temo ya dijalo"
+            ],
+            "high": [
+                "Tokafatsa go tsamaisa metsi",
+                "Lekola malwetse a fungal",
+                "Farologanya dijalo"
+            ]
+        }
+    }
+}
+
 
 @app.route("/")
 def home():
@@ -43,6 +160,12 @@ def analyse():
             }), 400
 
         district = data.get("district")
+        lang = data.get("language", "en").lower()
+
+        if lang not in TRANSLATIONS:
+            lang = "en"
+
+        t = TRANSLATIONS[lang]
 
         if not district:
             return jsonify({
@@ -139,84 +262,51 @@ def analyse():
 
         if avg_rainfall < 400:
 
-            rainfall_category = "Low Rainfall"
-            drought_risk = "High"
-            flood_risk = "Low"
+            rainfall_category = t["low_rainfall"]
+            drought_risk = t["high_risk"]
+            flood_risk = t["low_risk"]
 
-            crops = [
-                "Sorghum",
-                "Millet",
-                "Cowpea",
-                "Groundnut"
-            ]
-
-            practices = [
-                "Apply mulching",
-                "Harvest rainwater",
-                "Use drip irrigation",
-                "Plant drought-resistant crops",
-                "Plant immediately after effective rainfall"
-            ]
+            crops = t["crops"]["low"]
+            practices = t["practices"]["low"]
 
         elif avg_rainfall < 800:
 
-            rainfall_category = "Moderate Rainfall"
-            drought_risk = "Moderate"
-            flood_risk = "Low"
+            rainfall_category = t["moderate_rainfall"]
+            drought_risk = t["moderate_risk"]
+            flood_risk = t["low_risk"]
 
-            crops = [
-                "Maize",
-                "Sunflower",
-                "Groundnuts",
-                "Watermelon"
-            ]
-
-            practices = [
-                "Use crop rotation",
-                "Monitor rainfall patterns",
-                "Maintain soil moisture",
-                "Diversify crop production"
-            ]
+            crops = t["crops"]["moderate"]
+            practices = t["practices"]["moderate"]
 
         else:
 
-            rainfall_category = "High Rainfall"
-            drought_risk = "Low"
-            flood_risk = "Moderate"
+            rainfall_category = t["high_rainfall"]
+            drought_risk = t["low_risk"]
+            flood_risk = t["moderate_risk"]
 
-            crops = [
-                "Rice",
-                "Cassava",
-                "Vegetables",
-                "Wet-Tolerant Maize"
-            ]
-
-            practices = [
-                "Improve drainage",
-                "Monitor fungal diseases",
-                "Diversify crops"
-            ]
+            crops = t["crops"]["high"]
+            practices = t["practices"]["high"]
 
         # TEMPERATURE ANALYSIS
 
         if avg_temperature < 20:
 
-            temperature_category = "Low Temperature"
-            heat_risk = "Low"
+            temperature_category = t["low_temperature"]
+            heat_risk = t["low_risk"]
 
         elif avg_temperature < 30:
 
-            temperature_category = "Moderate Temperature"
-            heat_risk = "Moderate"
+            temperature_category = t["moderate_temperature"]
+            heat_risk = t["moderate_risk"]
 
         else:
 
-            temperature_category = "High Temperature"
-            heat_risk = "High"
+            temperature_category = t["high_temperature"]
+            heat_risk = t["high_risk"]
 
         # TREND ANALYSIS
 
-        rainfall_trend = "Stable"
+        rainfall_trend = t["stable"]
 
         if len(rainfall_values) > 1:
 
@@ -224,12 +314,12 @@ def analyse():
             last_rainfall = rainfall_values[-1]
 
             if last_rainfall > first_rainfall:
-                rainfall_trend = "Increasing"
+                rainfall_trend = t["increasing"]
 
             elif last_rainfall < first_rainfall:
-                rainfall_trend = "Decreasing"
+                rainfall_trend = t["decreasing"]
 
-        temperature_trend = "Stable"
+        temperature_trend = t["stable"]
 
         if len(temperature_values) > 1:
 
@@ -237,26 +327,27 @@ def analyse():
             last_temperature = temperature_values[-1]
 
             if last_temperature > first_temperature:
-                temperature_trend = "Increasing"
+                temperature_trend = t["increasing"]
 
             elif last_temperature < first_temperature:
-                temperature_trend = "Decreasing"
+                temperature_trend = t["decreasing"]
 
         # AI-STYLE ADVICE
 
-        ai_advice = (
-            f"{district} shows {rainfall_category.lower()} and "
-            f"{temperature_category.lower()} conditions. "
-            f"Drought risk is {drought_risk.lower()} and heat risk is "
-            f"{heat_risk.lower()}. Recommended crops include "
-            f"{', '.join(crops)}. Farmers should focus on "
-            f"{', '.join(practices[:3])} to improve resilience and "
-            f"sustainable production."
+        ai_advice = t["advice_template"].format(
+            district=district,
+            rainfall_category=rainfall_category,
+            temperature_category=temperature_category,
+            drought_risk=drought_risk,
+            heat_risk=heat_risk,
+            crops=", ".join(crops),
+            practices=", ".join(practices[:3])
         )
 
         return jsonify({
 
             "district": district,
+            "language": lang,
 
             "years_analysed": len(records),
 
