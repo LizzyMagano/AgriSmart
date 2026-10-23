@@ -1,88 +1,224 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana - Home</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      text-align: center;
+    <title>AgriSmart Botswana - Home</title>
 
-      /* Farm background */
-      background-image: url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-    }
+    <style>
 
-    /* Overlay for readability */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: -1;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
 
-    header {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      margin: 20px;
-    }
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-    h1 {
-      color: #ffd700;
-      font-size: 3em;
-    }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: -1;
+        }
 
-    p {
-      font-size: 1.2em;
-    }
+        header {
+            background: rgba(0,0,0,0.6);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+        }
 
-    /* Vertical button styling */
-    nav {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 20px;
-    }
+        h1 {
+            color: #ffd700;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
 
-    nav a {
-      background: rgba(0, 0, 0, 0.6);
-      color: #00ffcc;
-      text-decoration: none;
-      padding: 15px;
-      margin: 10px;
-      width: 250px;
-      border-radius: 8px;
-      font-size: 18px;
-      transition: background 0.3s;
-    }
+        p {
+            font-size: 1.2em;
+        }
 
-    nav a:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-  </style>
+        #language {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        nav a {
+            background: rgba(0,0,0,0.6);
+            color: #00ffcc;
+            text-decoration: none;
+            padding: 15px;
+            margin: 10px;
+            width: 250px;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-  <header>
-    <h1>AgriSmart Botswana</h1>
-    <p>Data-Driven Decision Support for Sustainable Crop & Water Management</p>
-  </header>
+<header>
 
-  <nav>
-    <a href="calendar.html">Farming Calendar</a>
-    <a href="analyse.html">Analyse My Farm</a>
-    <a href="knowledge.html">Farming Knowledge</a>
-    <a href="dashboard.html">Analytics Dashboards</a>
-    <a href="source.html">Research & Data Sources</a>
-  </nav>
+    <h1 id="title">AgriSmart Botswana</h1>
+
+    <p id="subtitle">
+        Data-Driven Decision Support for Sustainable Crop & Water Management
+    </p>
+
+    <select id="language">
+        <option value="en">English</option>
+        <option value="tn">Setswana</option>
+    </select>
+
+</header>
+
+<nav>
+
+    <a href="calendar.html" id="calendar">
+        Farming Calendar
+    </a>
+
+    <a href="analyse.html" id="analyse">
+        Analyse My Farm
+    </a>
+
+    <a href="knowledge.html" id="knowledge">
+        Farming Knowledge
+    </a>
+
+    <a href="dashboard.html" id="dashboard">
+        Analytics Dashboards
+    </a>
+
+    <a href="source.html" id="source">
+        Research & Data Sources
+    </a>
+
+</nav>
+
+<script>
+
+const translations = {
+
+    en: {
+
+        title: "AgriSmart Botswana",
+
+        subtitle:
+        "Data-Driven Decision Support for Sustainable Crop & Water Management",
+
+        calendar:
+        "Farming Calendar",
+
+        analyse:
+        "Analyse My Farm",
+
+        knowledge:
+        "Farming Knowledge",
+
+        dashboard:
+        "Analytics Dashboards",
+
+        source:
+        "Research & Data Sources"
+    },
+
+    tn: {
+
+        title: "AgriSmart Botswana",
+
+        subtitle:
+        "Tshegetso ya Ditshwetso ka Datha mo Taolong ya Dijalo le Metsi",
+
+        calendar:
+        "Khalendara ya Temo",
+
+        analyse:
+        "Sekaseka Polasi Ya Me",
+
+        knowledge:
+        "Kitso ya Temo",
+
+        dashboard:
+        "Diphanele tsa Tshekatsheko",
+
+        source:
+        "Patlisiso le Mehlodi ya Tshedimosetso"
+    }
+
+};
+
+function applyLanguage(lang) {
+
+    document.getElementById("title").textContent =
+        translations[lang].title;
+
+    document.getElementById("subtitle").textContent =
+        translations[lang].subtitle;
+
+    document.getElementById("calendar").textContent =
+        translations[lang].calendar;
+
+    document.getElementById("analyse").textContent =
+        translations[lang].analyse;
+
+    document.getElementById("knowledge").textContent =
+        translations[lang].knowledge;
+
+    document.getElementById("dashboard").textContent =
+        translations[lang].dashboard;
+
+    document.getElementById("source").textContent =
+        translations[lang].source;
+}
+
+const languageSelector =
+    document.getElementById("language");
+
+const savedLanguage =
+    localStorage.getItem("language") || "en";
+
+languageSelector.value =
+    savedLanguage;
+
+applyLanguage(savedLanguage);
+
+languageSelector.addEventListener("change", function() {
+
+    localStorage.setItem(
+        "language",
+        this.value
+    );
+
+    applyLanguage(this.value);
+});
+
+</script>
 
 </body>
 </html>
