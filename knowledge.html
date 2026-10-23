@@ -185,10 +185,10 @@ if (lang === "tn") {
     document.getElementById("cropList").innerHTML =
         `
         <li><b>Dithoro:</b> Mmidi, mabele, lebelebele.</li>
-        <li><b>Dinawa:</b> Cowpea, matonkomane, mung bean, chickpea.</li>
+        <li><b>Dinawa:</b> Dinawa, matonkomane,dibonkisi, Letlhodi</li>
         <li><b>Dijalo tsa Medi:</b> Cassava, sweet potato, yam.</li>
-        <li><b>Merogo:</b> Tamati, khabisi, eiee, segwete, spinach.</li>
-        <li><b>Maungo:</b> Legapu, citrus.</li>
+        <li><b>Merogo:</b> Tamati, khabisi, segwete, spinach.</li>
+        <li><b>Maungo:</b> Legapu,monawa.</li>
         `;
 
     document.getElementById("rainTitle").textContent =
@@ -203,6 +203,25 @@ if (lang === "tn") {
 
     document.getElementById("soilTitle").textContent =
         "Mefuta ya Mmu ka Dikgaolo";
+
+    //Translation to setswana
+    const soilRows =
+        document.querySelectorAll("#soilTable tr");
+
+    soilRows[0].innerHTML =
+        "<th>Kgaolo</th><th>Mmu o o Tlwaelegileng</th><th>Dibopego</th><th>Dijalo Tse di Siametseng</th>";
+
+    soilRows[1].innerHTML =
+        "<td>Kgalagadi, Ghanzi</td><td>Mmu wa Santa</td><td>Ga o tshole metsi sentle, o omeletseng</td><td>Leblele, mabele, dinawa</td>";
+
+    soilRows[2].innerHTML =
+        "<td>Pandamatenga</td><td>Vertisols</td><td>O tshola metsi thata</td><td>Mabele, raese</td>";
+
+    soilRows[3].innerHTML =
+        "<td>Borwa</td><td>Luvisols</td><td>O nonne, o tsamaisa metsi sentle</td><td>Mmidi, merogo</td>";
+
+    soilRows[4].innerHTML =
+        "<td>Okavango Delta</td><td>Mmu wa Alluvial</td><td>O metsi, o amilwe ke dikgogola</td><td>Raese, merogo</td>";
 
     document.getElementById("soilGuideTitle").textContent =
         "Kaelo ya go Lemoga Mefuta ya Mmu";
