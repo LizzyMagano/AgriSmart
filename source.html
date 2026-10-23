@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AgriSmart Botswana Source</title>
+  <title>AgriSmart Botswana</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       color: #fff;
       text-align: center;
-
-      /* Farm background */
-      background-image: url('background.jpg'); /* Replace with your farm/crops image */
+      background-image: url('background.jpg'); 
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
     }
 
-    /* Overlay for readability */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5); /* Slightly darker for readability */
       z-index: -1;
     }
 
@@ -35,12 +32,36 @@
 
     h1 {
       color: #ffd700; /* golden highlight */
+      margin-bottom: 5px;
+    }
+
+    p.subtitle {
+      margin-top: 0;
+      font-size: 16px;
+      color: #ddd;
+    }
+
+    /* Language Toggle Button */
+    .lang-btn {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #00ffcc;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .lang-btn:hover {
+      background: #00cca3;
     }
 
     /* Vertical button styling */
     nav {
       display: flex;
-      flex-direction: column; /* stack vertically */
+      flex-direction: column;
       align-items: center;
       margin: 20px;
     }
@@ -50,32 +71,113 @@
       color: #00ffcc;
       text-decoration: none;
       padding: 15px;
-      margin: 10px;
+      margin: 8px;
       width: 250px;
       border-radius: 8px;
       font-size: 18px;
       transition: background 0.3s;
+      border: 1px solid rgba(0, 255, 204, 0.3);
     }
 
     nav a:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 215, 0, 0.2); /* Golden hover effect */
+      color: #ffd700;
+      border: 1px solid #ffd700;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.5);
+      margin: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>AgriSmart Botswana</h1>
-    <p>Data-Driven Decision Support for Sustainable Crop & Water Management</p>
+    <h1 id="mainTitle">AgriSmart Botswana</h1>
+    <p class="subtitle" id="subTitle">Data-Driven Decision Support for Sustainable Crop & Water Management</p>
+    <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">Setswana</button>
   </header>
 
   <nav>
-    <a href="climate-crops-soil.html">Climate • Crops •  Soil</a>
-    <a href="calendar.html"> Farming Calendar</a>
-    <a href="analyse.html"> Analyse My Farm</a>
-    <a href="decision.html">Farming Decision Guide</a>
-    <a href="dashboards.html"> Power BI Dashboards</a>
-    <a href="myfarm.html">My Farm</a>
-    <a href="about.html">Research & Data Sources</a>
+    <!-- Add or change links in this section -->
+    <a href="climate-crops-soil.html" id="link1">Climate • Crops • Soil</a>
+    <a href="calendar.html" id="link2">Farming Calendar</a>
+    <a href="analyse.html" id="link3">Analyse My Farm</a>
+    <a href="decision.html" id="link4">Farming Decision Guide</a>
+    <a href="dashboards.html" id="link5">Agricultural Dashboards</a>
+    <a href="myfarm.html" id="link6">My Farm</a>
+    <a href="about.html" id="link7">Research & Data Sources</a>
+    
+    <!-- WHERE TO ADD LINKS: Add a new feature page here -->
+    <!-- <a href="weather.html" id="link8">Weather Forecast</a> -->
   </nav>
+
+  <footer>
+    <p>&copy; 2024 AgriSmart Botswana. All rights reserved.</p>
+    <!-- WHERE TO ADD LINKS: You can add external links or small footer links here -->
+  </footer>
+
+  <script>
+    // Check saved language preference
+    let lang = localStorage.getItem("language") || "en";
+
+    const translations = {
+      en: {
+        title: "AgriSmart Botswana",
+        subtitle: "Data-Driven Decision Support for Sustainable Crop & Water Management",
+        btnText: "Setswana",
+        link1: "Climate • Crops • Soil",
+        link2: "Farming Calendar",
+        link3: "Analyse My Farm",
+        link4: "Farming Decision Guide",
+        link5: "Agricultural Dashboards",
+        link6: "My Farm",
+        link7: "Research & Data Sources"
+      },
+      tn: {
+        title: "AgriSmart Botswana",
+        subtitle: "Tshegetso ya Ditshwetso ka Datha go ya ka Temo le Metsi",
+        btnText: "English",
+        link1: "Tlelaemete • Dijalo • Mmu",
+        link2: "Khalendara ya Temo",
+        link3: "Sekaseka Polasi Ya Me",
+        link4: "Kaelo ya Ditshwetso tsa Temo",
+        link5: "Diboto tsa Temo",
+        link6: "Polasi Ya Me",
+        link7: "Dipatlisiso le Metswedi ya Datha"
+      }
+    };
+
+    function updateLanguage() {
+      const t = translations[lang];
+      
+      document.getElementById("mainTitle").textContent = t.title;
+      document.getElementById("subTitle").textContent = t.subtitle;
+      document.getElementById("langBtn").textContent = t.btnText;
+      
+      document.getElementById("link1").textContent = t.link1;
+      document.getElementById("link2").textContent = t.link2;
+      document.getElementById("link3").textContent = t.link3;
+      document.getElementById("link4").textContent = t.link4;
+      document.getElementById("link5").textContent = t.link5;
+      document.getElementById("link6").textContent = t.link6;
+      document.getElementById("link7").textContent = t.link7;
+    }
+
+    // Toggle between English and Setswana
+    function toggleLanguage() {
+      lang = (lang === "en") ? "tn" : "en";
+      localStorage.setItem("language", lang);
+      updateLanguage();
+    }
+
+    // Run on page load
+    updateLanguage();
+  </script>
+
 </body>
 </html>
