@@ -55,17 +55,6 @@
             text-decoration: none;
             margin: 0 10px;
         }
-
-        label {
-            display: block;
-            margin: 10px 0;
-        }
-
-        input,
-        select {
-            padding: 5px;
-            margin: 5px;
-        }
     </style>
 </head>
 
@@ -130,33 +119,6 @@
 
 </section>
 
-<section>
-
-
-    <form id="calendarForm">
-
-        <label id="monthLabel">
-            Month of Planting:
-
-            <select id="plantMonth">
-                <option>September</option>
-                <option>October</option>
-                <option>November</option>
-                <option>December</option>
-                <option>January</option>
-                <option>February</option>
-                <option>March</option>
-                <option>April</option>
-            </select>
-
-        </label>
-
-    </form>
-
-</section>
-
-<section id="results"></section>
-
 <footer>
     <a href="index.html" id="homeLink">Home</a> |
     <a href="analyse.html" id="analyseLink">Analyse My Farm</a>
@@ -174,9 +136,6 @@ if (lang === "tn") {
     document.getElementById("seasonTitle").textContent =
         "Ditiro tsa Sehla";
 
-    document.getElementById("recordTitle").textContent =
-        "Rekota Temo ya Gago";
-
     const rows =
         document.querySelectorAll("#calendarTable tr");
 
@@ -184,7 +143,7 @@ if (lang === "tn") {
         "<th>Kgwedi</th><th>Tiro</th>";
 
     rows[1].innerHTML =
-        "<td>Lwetse</td><td>Baakanya tshimo ya gago/ Tokiso ya masimo ya simologa</td>";
+        "<td>Lwetse</td><td>Baakanya tshimo ya gago / Tokiso ya masimo ya simologa</td>";
 
     rows[2].innerHTML =
         "<td>Diphalane</td><td>Go jala fa dipula tsa ntlha di simologa</td>";
@@ -207,34 +166,6 @@ if (lang === "tn") {
     rows[8].innerHTML =
         "<td>Moranang</td><td>Sehla se segolo sa thobo</td>";
 
-    document.getElementById("monthLabel").innerHTML = `
-        Kgwedi ya Temo:
-
-        <select id="plantMonth">
-            <option>Lwetse</option>
-            <option>Diphalane</option>
-            <option>Ngwanatsele</option>
-            <option>Ngoatole</option>
-            <option>Ferikgong</option>
-            <option>Tlhakole</option>
-            <option>Mopitlwe</option>
-            <option>Moranang</option>
-        </select>
-    `;
-
-    document.getElementById("daysLabel").innerHTML = `
-        Malatsi a go Jala:
-
-        <input
-            type="number"
-            id="plantDays"
-            min="1"
-            max="60">
-    `;
-
-    document.getElementById("saveBtn").value =
-        "Boloka Rekoto";
-
     document.getElementById("homeLink").textContent =
         "Gae";
 
@@ -242,40 +173,7 @@ if (lang === "tn") {
         "Sekaseka Polasi Ya Me";
 }
 
-document.getElementById("calendarForm")
-.addEventListener("submit", function(e) {
-
-    e.preventDefault();
-
-    let month =
-        document.getElementById("plantMonth").value;
-
-    let days =
-        document.getElementById("plantDays").value;
-
-    if (lang === "tn") {
-
-        document.getElementById("results").innerHTML = `
-           
- <p>
-                Tswelela go lekola pula le kgolo ya dijalo
-                gore o bone tsotlhe di tsamaya sentle.
-            </p>
-        `;
-    }
-    else {
-
-            <p>
-                Keep monitoring rainfall and crop growth
-                for best results.
-            </p>
-        `;
-    }
-
-});
-
 </script>
 
 </body>
 </html>
-
