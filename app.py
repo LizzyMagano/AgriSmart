@@ -40,7 +40,6 @@ DISTRICT_COORDINATES = {
     "Northern": {"lat": -19.98, "lon": 23.42}
 }
 
-# Fallback data based on your CSV (Prevents crashes if Supabase fails)
 FALLBACK_CLIMATE = {
     "Kgalagadi": {"rain": 316, "temp": 31.1},
     "Chobe": {"rain": 686, "temp": 27.1},
@@ -55,9 +54,6 @@ FALLBACK_CLIMATE = {
     "South East": {"rain": 446, "temp": 29.1}
 }
 
-# ---------------------------------------------------------------
-# TRANSLATION DICTIONARIES
-# ---------------------------------------------------------------
 TRANSLATIONS = {
     "en": {
         "low_rainfall": "Low Rainfall",
@@ -73,13 +69,10 @@ TRANSLATIONS = {
         "decreasing": "Decreasing",
         "stable": "Stable",
         "advice_template": (
-            "{district} shows {rainfall_category} and "
-            "{temperature_category} conditions. "
-            "Drought risk is {drought_risk} and heat risk is "
-            "{heat_risk}. Recommended crops include "
-            "{crops}. Farmers should focus on "
-            "{practices} to improve resilience and "
-            "sustainable production."
+            "{district} shows {rainfall_category} and {temperature_category} conditions. "
+            "Drought risk is {drought_risk} and heat risk is {heat_risk}. "
+            "Recommended crops include {crops}. Farmers should focus on "
+            "{practices} to improve resilience and sustainable production."
         ),
         "crops": {
             "low": ["Sorghum", "Millet", "Cowpea", "Groundnut"],
@@ -87,14 +80,8 @@ TRANSLATIONS = {
             "high": ["Rice", "Cassava", "Vegetables", "Wet-Tolerant Maize"]
         },
         "practices": {
-            "low": [
-                "Apply mulching", "Harvest rainwater", "Use drip irrigation",
-                "Plant drought-resistant crops", "Plant immediately after effective rainfall"
-            ],
-            "moderate": [
-                "Use crop rotation", "Monitor rainfall patterns",
-                "Maintain soil moisture", "Diversify crop production"
-            ],
+            "low": ["Apply mulching", "Harvest rainwater", "Use drip irrigation", "Plant drought-resistant crops", "Plant immediately after effective rainfall"],
+            "moderate": ["Use crop rotation", "Monitor rainfall patterns", "Maintain soil moisture", "Diversify crop production"],
             "high": ["Improve drainage", "Monitor fungal diseases", "Diversify crops"]
         }
     },
@@ -112,13 +99,10 @@ TRANSLATIONS = {
         "decreasing": "E a Fokotsega",
         "stable": "E Thebile",
         "advice_template": (
-            "{district} e na le {rainfall_category} le "
-            "{temperature_category}. "
-            "Kotsi ya leuba ke {drought_risk} mme kotsi ya mogote ke "
-            "{heat_risk}. Dijalo tse di tshitshintsweng di akaretsa "
-            "{crops}. Balemi ba tshwanetse go tlhoma tlhoko mo "
-            "{practices} go tokafatsa mamello le "
-            "temo e e tswelelang."
+            "{district} e na le {rainfall_category} le {temperature_category}. "
+            "Kotsi ya leuba ke {drought_risk} mme kotsi ya mogote ke {heat_risk}. "
+            "Dijalo tse di tshitshintsweng di akaretsa {crops}. Balemi ba tshwanetse go tlhoma tlhoko mo "
+            "{practices} go tokafatsa mamello le temo e e tswelelang."
         ),
         "crops": {
             "low": ["Mabele", "Leblele", "Dinawa", "Matonkomane"],
@@ -126,22 +110,12 @@ TRANSLATIONS = {
             "high": ["Raese", "Cassava", "Merogo", "Mmidi o o Emelang Metsi"]
         },
         "practices": {
-            "low": [
-                "Dirisa mulch", "Kgapela pula", "Dirisa drip irrigation",
-                "Jala dijalo tse di emelang leuba", "Jala ka bonako morago ga pula e e lekaneng"
-            ],
-            "moderate": [
-                "Dirisa go fetola dijalo", "Lekola mokgwa wa pula",
-                "Boloka metsi mo mmung", "Farologanya temo ya dijalo"
-            ],
+            "low": ["Dirisa mulch", "Kgapela pula", "Dirisa drip irrigation", "Jala dijalo tse di emelang leuba", "Jala ka bonako morago ga pula e e lekaneng"],
+            "moderate": ["Dirisa go fetola dijalo", "Lekola mokgwa wa pula", "Boloka metsi mo mmung", "Farologanya temo ya dijalo"],
             "high": ["Tokafatsa go tsamaisa metsi", "Lekola malwetse a fungal", "Farologanya dijalo"]
         }
     }
 }
-
-# ---------------------------------------------------------------
-# ROUTES
-# ---------------------------------------------------------------
 
 @app.route("/")
 def home():
@@ -155,7 +129,6 @@ def model_metrics():
         "features_used": ["avg_rainfall_mm", "avg_temperature_c"], 
         "evaluation_metrics": {
             "Accuracy": "100%", 
-            "F1-Score": "1.0",
             "Note": "Evaluated on 20% holdout test set using local CSV data."
         },
         "dataset_size": "96 records"
@@ -178,17 +151,19 @@ def analyse():
         if not district:
             return jsonify({"error": "District is required"}), 400
 
-        # 1. FETCH HISTORICAL DATA FROM SUPABASE (With Fallback)
+        # 1. FETCH HISTORICAL DATA FROM SUPABASE (Using params to fix spaces in district names)
         avg_rainfall = 0
         avg_temperature = 0
         records_count = 0
         rainfall_values = []
+        temperature_values = []
         
         try:
             response = requests.get(
-                f"{SUPABASE_URL}/climate_data?district=eq.{district}&order=year.asc",
+                f"{SUPABASE_URL}/climate_data",
+                params={"district": f"eq.{district}", "order": "year.asc"},
                 headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
-                timeout=5 # Short timeout so it doesn't hang if offline
+                timeout=5
             )
             if response.status_code == 200:
                 records = response.json()
@@ -198,16 +173,17 @@ def analyse():
                     avg_rainfall = round(sum(rainfall_values) / len(rainfall_values), 1)
                     avg_temperature = round(sum(temperature_values) / len(temperature_values), 1)
                     records_count = len(records)
-        except Exception:
-            pass # Silently fail and use fallback
+        except Exception as e:
+            print(f"Supabase fetch failed: {e}")
 
         # If Supabase failed, use the CSV fallback data
         if records_count == 0:
             fallback = FALLBACK_CLIMATE.get(district, {"rain": 400, "temp": 28})
             avg_rainfall = fallback["rain"]
             avg_temperature = fallback["temp"]
-            records_count = 8 # Default based on your CSV
-            rainfall_values = [avg_rainfall, avg_rainfall] # Fake array for trend logic
+            records_count = 8
+            rainfall_values = [avg_rainfall, avg_rainfall]
+            temperature_values = [avg_temperature, avg_temperature]
 
         # 2. FETCH CURRENT FORECAST FROM OPEN-METEO
         recent_temp = None
@@ -258,13 +234,14 @@ def analyse():
             # Fallback rule-based logic
             if avg_rainfall < 400:
                 rainfall_category, drought_risk, crops, practices = t["low_rainfall"], t["high_risk"], t["crops"]["low"], t["practices"]["low"]
-            elif avg_rainfall < 800:
+            elif avg_rainfall < 600:
                 rainfall_category, drought_risk, crops, practices = t["moderate_rainfall"], t["moderate_risk"], t["crops"]["moderate"], t["practices"]["moderate"]
             else:
                 rainfall_category, drought_risk, crops, practices = t["high_rainfall"], t["low_risk"], t["crops"]["high"], t["practices"]["high"]
 
         # 5. TEMPERATURE & TREND ANALYSIS
-        flood_risk = t["low_risk"] if avg_rainfall < 800 else t["moderate_risk"]
+        # Changed flood risk threshold to 600 to match the new model
+        flood_risk = t["low_risk"] if avg_rainfall < 600 else t["moderate_risk"]
 
         if avg_temperature < 20:
             temperature_category, heat_risk = t["low_temperature"], t["low_risk"]
@@ -273,12 +250,16 @@ def analyse():
         else:
             temperature_category, heat_risk = t["high_temperature"], t["high_risk"]
 
+        # Calculate Trends
         rainfall_trend = t["stable"]
         if len(rainfall_values) > 1:
             if rainfall_values[-1] > rainfall_values[0]: rainfall_trend = t["increasing"]
             elif rainfall_values[-1] < rainfall_values[0]: rainfall_trend = t["decreasing"]
 
         temperature_trend = t["stable"]
+        if len(temperature_values) > 1:
+            if temperature_values[-1] > temperature_values[0]: temperature_trend = t["increasing"]
+            elif temperature_values[-1] < temperature_values[0]: temperature_trend = t["decreasing"]
 
         # 6. GENERATE ADVICE
         ai_advice = t["advice_template"].format(
